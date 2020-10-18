@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Menu.h"
 
 using namespace sf;
 
@@ -8,14 +9,14 @@ int main()
     RenderWindow window(VideoMode(vm.width, vm.height), "Score Arena v1.0", Style::Fullscreen);
     window.setPosition(Vector2i(0, 0));
 
+    Menu menu(vm.width, vm.height);
+    menu.setActive(true, window);
+
     while (window.isOpen())
     {
         Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == Event::Closed)
-                window.close();
-
             switch (event.type) {
                 case Event::Closed:
                     window.close();
@@ -31,7 +32,7 @@ int main()
 
         window.clear();
         
-        
+        menu.draw(window);
 
         window.display();
     }
