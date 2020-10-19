@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "Menu.h"
 
 using namespace sf;
@@ -22,10 +21,23 @@ int main()
                     window.close();
                     break;
 
-                //when a key is pressed
                 case Event::KeyPressed:
                     if (Keyboard::isKeyPressed(Keyboard::Escape))
                         window.close();
+                    break;
+
+                case Event::MouseMoved:
+                    menu.mouseMoved();
+                    break;
+
+                case Event::MouseButtonPressed:
+                    if (event.mouseButton.button == Mouse::Left)
+                        menu.mousePressed();
+                    break;
+                    
+                case Event::MouseButtonReleased:
+                    if (event.mouseButton.button == Mouse::Left)
+                        menu.mouseReleased();
                     break;
             }
         }
@@ -35,6 +47,9 @@ int main()
         menu.draw(window);
 
         window.display();
+
+        if (menu.queueExit)
+            window.close();
     }
 
     return 0;

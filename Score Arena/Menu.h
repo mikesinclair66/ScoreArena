@@ -9,21 +9,33 @@ class Menu {
 	int page = 0;
 	Texture title;
 	string labels[4]{
-		"Single Player",
-		"Multi Player",
-		"Options",
-		"Exit"
+		"SINGLE PLAYER",
+		"MULTI PLAYER",
+		"OPTIONS",
+		"EXIT"
 	};
 	Texture bg;
-	Sprite sprite;
 	Image cursorImg;
+	Font font;
+	Text text;
+	Sprite sprite;
 	bool active = false;
 
+	Clock clock;
+	const float SEGMENTS = 7;//segments to divide screen height by
+	RectangleShape selector;
+	int selected = 0;//the selected option
+	const float SELECT_MOD = 2;
 	int width, height;
 
 public:
 	Menu(int, int);
 	void draw(RenderWindow &window);
+	void mouseMoved();
+	void mousePressed();
+	void mouseReleased();
 	bool isActive() { return active; }
 	void setActive(bool val, RenderWindow& window);
+
+	bool queueExit = false;//if the user queues to exit the game
 };
