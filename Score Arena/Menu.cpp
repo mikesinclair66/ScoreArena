@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "menu.h"
 #include <iostream>
 
 using namespace std;
@@ -30,7 +30,7 @@ Menu::Menu(int width, int height) {
 	text.setFillColor(Color::White);
 	text.setStyle(Text::Bold);
 
-	selector.setFillColor(Color::White);
+	selector.setFillColor(Color::Magenta);
 }
 
 void Menu::draw(RenderWindow &window) {
@@ -116,6 +116,7 @@ void Menu::mouseMoved() {
 
 	if (selected > 0) {
 		if (this->selected != selected) {
+			//TODO PUT IN SELECTOR FUNCTION
 			clock.restart();
 			selector.setSize(Vector2f(SELECT_MOD, SELECT_MOD * 8));
 			selector.setPosition(Vector2f(width / 2 - SELECT_MOD / 2,
@@ -138,10 +139,46 @@ void Menu::mouseReleased() {
 	if (!isActive())
 		return;
 
+	activateSelected();
+}
+
+void Menu::keyPressed() {
+	if (!isActive())
+		return;
+
+	bool up = false, down = false, w = false, d = false;
+	if (Keyboard::isKeyPressed(Keyboard::Up))
+		up = true;
+	if (Keyboard::isKeyPressed(Keyboard::Down))
+		down = true;
+	if (Keyboard::isKeyPressed(Keyboard::W))
+		up = true;
+	if (Keyboard::isKeyPressed(Keyboard::D))
+		down = true;
+
+	bool enter = false;
+	if (Keyboard::isKeyPressed(Keyboard::Enter))
+		enter = true;
+
+	if (up || down || w || d) {
+		switch (selected) {
+		case 0:
+			selected = 1;
+			break;
+		case 1:
+
+			break;
+		}
+	}
+}
+
+void Menu::activateSelected() {
 	if (selected == 1 || selected == 2)
 		page = 1;
 	else if (selected == 3)
 		page = 2;
-	else if(selected == 4)
+	else if (selected == 4)
 		queueExit = true;
+
+	selected = 0;
 }

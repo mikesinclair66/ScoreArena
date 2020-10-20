@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "menu.h"
 
 using namespace sf;
 
@@ -24,6 +24,7 @@ int main()
                 case Event::KeyPressed:
                     if (Keyboard::isKeyPressed(Keyboard::Escape))
                         window.close();
+                    menu.keyPressed();
                     break;
 
                 case Event::MouseMoved:

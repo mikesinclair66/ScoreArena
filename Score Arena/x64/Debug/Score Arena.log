@@ -1,26 +1,2 @@
-﻿  Menu.cpp
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(45,35): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(45,32): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(54,42): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(65,41): warning C4244: 'argument': conversion from 'unsigned __int64' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
+﻿  selector.cpp
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe
