@@ -7,38 +7,28 @@ using namespace std;
 using namespace sf;
 
 class Menu {
+	bool active = false;
+	int width, height;
+	const int SEGMENTS = 7;//segments to divide height by when coordinating options
 	int page = 0;
-	Texture title;
-	string labels[4]{
-		"SINGLE PLAYER",
-		"MULTI PLAYER",
-		"OPTIONS",
-		"EXIT"
-	};
-	Texture bg;
 	Image cursorImg;
+	Cursor cursor;
+	Texture bg, title;
+	Sprite sprite;
 	Font font;
 	Text text;
-	Sprite sprite;
-	bool active = false;
-
-	Clock clock;
-	const float SEGMENTS = 7;//segments to divide screen height by
 	Selector selector;
-	int selected = 0;//the selected option
-	const float SELECT_MOD = 2;
-	int width, height;
+	bool queueExit = false;
 
 public:
 	Menu(int, int);
-	void draw(RenderWindow &window);
-	void mouseMoved();
-	void mousePressed();
-	void mouseReleased();
-	void keyPressed();
+	void draw(RenderWindow&);
 	bool isActive() { return active; }
-	void setActive(bool val, RenderWindow& window);
+	void setActive(bool active, RenderWindow&);
 	void activateSelected();
-
-	bool queueExit = false;//if the user queues to exit the game
+	void keyPressed();
+	void keyReleased(Event);
+	void mouseMoved();
+	void setExitQueue(bool val) { queueExit = val; }
+	bool getExitQueue() { return queueExit; }
 };

@@ -7,178 +7,126 @@ Menu::Menu(int width, int height) {
 	this->width = width;
 	this->height = height;
 
-	//load background image
+	//load images
 	if (!bg.loadFromFile("res\\menuBg.jpg"))
-		throw runtime_error("Failed to load background image.");
+		throw runtime_error("Background image couldn\'t be loaded.");
 
-	//load title image
 	if (!title.loadFromFile("res\\menuTitle.png"))
-		throw runtime_error("Failed to load title image.");
+		throw runtime_error("Title image couldn\'t be loaded.");
 
 	//load cursor
 	if (!cursorImg.loadFromFile("res\\cursor.png"))
-		throw runtime_error("Failed to load cursor image.");
+		throw runtime_error("Cursor image couldn\'t be loaded.");
+	if (!cursor.loadFromPixels(cursorImg.getPixelsPtr(), cursorImg.getSize(), Vector2u(0, 0)))
+		throw runtime_error("Cursor couldn\'t be loaded from image.");
 
-	//load font
+	//load option format and then create options
 	if (!font.loadFromFile("res\\Sinclairscript-Regular.ttf")) {
-		//load other font it ttf isn't supported
 		if (!font.loadFromFile("res\\Sinclairscript-Regular.otf"))
-			throw runtime_error("Failed to load font.");
+			throw runtime_error("Could not load Sinclair_Script font.");
 	}
 	text.setFont(font);
-	text.setCharacterSize(45);
-	text.setFillColor(Color::White);
+	text.setCharacterSize(Selector::CHAR_SIZE);
 	text.setStyle(Text::Bold);
-
-	selector.setFillColor(Color::Magenta);
+	//page 0
+	selector.sets[0].push_back("SINGLE PLAYER", Vector2f(width / 2, height / SEGMENTS * 3));
+	selector.sets[0].push_back("MULTI PLAYER", Vector2f(width / 2, height / SEGMENTS * 4));
+	selector.sets[0].push_back("OPTIONS", Vector2f(width / 2, height / SEGMENTS * 5));
+	selector.sets[0].push_back("EXIT", Vector2f(width / 2, height / SEGMENTS * 6));
 }
 
-void Menu::draw(RenderWindow &window) {
-	if (!isActive())
-		return;
+void Menu::draw(RenderWindow& window) {
+	if (isActive()) {
+		//draw bg
+		sprite.setTexture(bg);
+		Vector2u bgSize = bg.getSize();
+		for (int i = 0; i < height; i += bgSize.y) {
+			for (int j = 0; j < width; j += bgSize.x) {
+				sprite.setPosition(Vector2f(j, i));
+				window.draw(sprite);
+			}
+		}
 
-	//fill background with bg image
-	sprite.setTexture(bg);
-	Vector2u dims = bg.getSize();
-	for (int i = 0; i < height; i += dims.y) {
-		for (int j = 0; j < width; j += dims.x) {
-			sprite.setPosition(Vector2f(j, i));
+		//draw title on first page
+		if (page == 0) {
+			sprite.setTexture(title);
+			sprite.setPosition(Vector2f(width / 2 - title.getSize().x / 2, height / SEGMENTS * 1));
 			window.draw(sprite);
 		}
-	}
 
-	//draw the specified page
-	switch (page) {
-		case 0:
-			sprite.setTexture(title);
-			sprite.setPosition(Vector2f(width / 2 - title.getSize().x / 2,
-				(float)(1 / SEGMENTS * height)));
-			window.draw(sprite);
-
-			//display the options
-			for (int i = 0; i < sizeof(labels) / sizeof(labels[0]); i++) {
-				if (selected == i + 1)
-					text.setFillColor(Color::Yellow);
-				else
-					text.setFillColor(Color::White);
-				text.setString(labels[i]);
-				text.setPosition(Vector2f(width / 2 - text.getCharacterSize() * labels[i].length()
-					/ 4, (float)((i + 3) / SEGMENTS * height)));
-				window.draw(text);
-			}
-
-			if (selected > 0) {
-				float mod = clock.getElapsedTime().asMilliseconds() * SELECT_MOD;
-				float labelSize = (float)(labels[selected - 1].length() * text.getCharacterSize())
-					* 0.6f;
-				if (mod > labelSize)
-					mod = labelSize;
-
-				selector.setSize(Vector2f(mod, SELECT_MOD * 8));
-				selector.setPosition(Vector2f(width / 2 - (float) mod * 0.475f,
-					selector.getPosition().y));
-				window.draw(selector);
-			}
-
-			break;
+		//draw options
+		selector.sets[page].draw(window, text);
 	}
 }
 
-void Menu::setActive(bool val, RenderWindow &window) {
-	active = val;
-
-	//change cursor
-	if (val) {
-		Vector2u cSize = cursorImg.getSize();
-		Cursor cursor;
-		if(cursor.loadFromPixels(cursorImg.getPixelsPtr(), cSize, Vector2u(0, 0)))
-			window.setMouseCursor(cursor);
+void Menu::setActive(bool active, RenderWindow& window) {
+	if (active) {
+		window.setMouseCursor(cursor);
 	}
 	else {
-		//TODO make cursor invisible
+		//make cursor invisible
+	}
+
+	this->active = active;
+}
+
+/// <summary>
+/// Activates the selected option. Since each option for
+/// every page does different actions, each action should
+/// be specified here.
+/// </summary>
+void Menu::activateSelected() {
+	if (page == 0) {
+		switch (selector.sets[page].getSelected()) {
+		case 1:
+			page = 1;
+			//add commands for single player page
+			break;
+		case 2:
+			page = 1;
+			//add commands for multi player page
+			break;
+		case 3:
+			page = 3;//page 3 as page 2 is for selecting the map
+			break;
+		case 4:
+			setExitQueue(true);
+			break;
+		}
+	}
+}
+
+void Menu::keyPressed() {
+	if (isActive()) {
+		bool up = false, down = false;
+
+		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W))
+			selector.sets[page].select(selector.sets[page].getSelected() - 1);
+		else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S))
+			selector.sets[page].select(selector.sets[page].getSelected() + 1);
+
+		//if selected var goes out of bound, return to opposite end
+		if (selector.sets[page].getSelected() < 1)
+			selector.sets[page].select(selector.sets[page].getOptionsLength());
+		else if (selector.sets[page].getSelected() > selector.sets[page].getOptionsLength())
+			selector.sets[page].select(1);
+	}
+}
+
+void Menu::keyReleased(Event k) {
+	if (isActive()) {
+		if (k.key.code == Keyboard::Enter)
+			activateSelected();
 	}
 }
 
 void Menu::mouseMoved() {
-	if (!isActive())
-		return;
+	Vector2i pos = Mouse::getPosition();
 
-	Vector2i coords = Mouse::getPosition();
-	int selected = 0;
-	for (int i = 0; i < sizeof(labels) / sizeof(labels[0]); i++) {
-		//if the cursor is in between the width and height of the option
-		if (coords.x >= width / 2 - text.getCharacterSize() * labels[i].length() / 4 && coords.x <=
-			width / 2 + text.getCharacterSize() * labels[i].length() / 4 &&
-			coords.y >= (float)((i + 3) / SEGMENTS * height) + 10 && coords.y <=
-			(float)((i + 3) / SEGMENTS * height) + text.getCharacterSize() + 10)
-			selected = i + 1;
+	for (int i = 0; i < selector.sets[page].getOptionsLength(); i++) {
+		String label = selector.sets[page].getLabel(i);
+		Vector2f location = selector.sets[page].getLocation(i);
+
+		//TODO check if mouse is in bounds
 	}
-
-	if (selected > 0) {
-		if (this->selected != selected) {
-			//TODO PUT IN SELECTOR FUNCTION
-			clock.restart();
-			selector.setSize(Vector2f(SELECT_MOD, SELECT_MOD * 8));
-			selector.setPosition(Vector2f(width / 2 - SELECT_MOD / 2,
-				(float)((selected + 2) / SEGMENTS * height) + text.getCharacterSize()
-				+ SELECT_MOD * 7));
-		}
-
-		this->selected = selected;
-	}
-	else if (selected == 0 && this->selected != 0)
-		this->selected = 0;
-}
-
-void Menu::mousePressed() {
-	if (!isActive())
-		return;
-}
-
-void Menu::mouseReleased() {
-	if (!isActive())
-		return;
-
-	activateSelected();
-}
-
-void Menu::keyPressed() {
-	if (!isActive())
-		return;
-
-	bool up = false, down = false, w = false, d = false;
-	if (Keyboard::isKeyPressed(Keyboard::Up))
-		up = true;
-	if (Keyboard::isKeyPressed(Keyboard::Down))
-		down = true;
-	if (Keyboard::isKeyPressed(Keyboard::W))
-		up = true;
-	if (Keyboard::isKeyPressed(Keyboard::D))
-		down = true;
-
-	bool enter = false;
-	if (Keyboard::isKeyPressed(Keyboard::Enter))
-		enter = true;
-
-	if (up || down || w || d) {
-		switch (selected) {
-		case 0:
-			selected = 1;
-			break;
-		case 1:
-
-			break;
-		}
-	}
-}
-
-void Menu::activateSelected() {
-	if (selected == 1 || selected == 2)
-		page = 1;
-	else if (selected == 3)
-		page = 2;
-	else if (selected == 4)
-		queueExit = true;
-
-	selected = 0;
 }

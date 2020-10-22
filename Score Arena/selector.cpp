@@ -1,14 +1,27 @@
 #include "selector.h"
 
-Selector::Selector() {
-	RectangleShape::setFillColor(c1);
-	shadow.setFillColor(c2);
+void Selector::Set::push_back(string label, Vector2f location) {
+	this->labels.push_back(label);
+	this->locations.push_back(location);
 }
 
-void Selector::setFillColor(Color c1, Color c2) {
-	this->c1 = c1;
-	this->c2 = c2;
+void Selector::Set::draw(RenderWindow& window, Text text) {
+	for (int i = 0; i < labels.size(); i++) {
+		if (getSelected() == i + 1)
+			text.setFillColor(Color::Yellow);
+		else
+			text.setFillColor(Color::White);
 
-	RectangleShape::setFillColor(c1);
-	shadow.setFillColor(c2);
+		text.setString(getLabel(i));
+		text.setPosition(getLocation(i));
+		//center text at coordinates
+		FloatRect textRect = text.getLocalBounds();
+		text.setOrigin(textRect.left + textRect.width / 2.0f,
+			textRect.top + textRect.height / 2.0f);
+		window.draw(text);
+	}
+}
+
+void Selector::Set::select(int selected) {
+	this->selected = selected;
 }

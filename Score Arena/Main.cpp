@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "selector.h"
 
 using namespace sf;
 
@@ -13,6 +14,9 @@ int main()
 
     while (window.isOpen())
     {
+        if (menu.getExitQueue())
+            window.close();
+
         Event event;
         while (window.pollEvent(event))
         {
@@ -24,33 +28,23 @@ int main()
                 case Event::KeyPressed:
                     if (Keyboard::isKeyPressed(Keyboard::Escape))
                         window.close();
-                    menu.keyPressed();
+                    else
+                        menu.keyPressed();
                     break;
 
-                case Event::MouseMoved:
-                    menu.mouseMoved();
-                    break;
-
-                case Event::MouseButtonPressed:
-                    if (event.mouseButton.button == Mouse::Left)
-                        menu.mousePressed();
+                case Event::KeyReleased:
+                    menu.keyReleased(event);
                     break;
                     
-                case Event::MouseButtonReleased:
-                    if (event.mouseButton.button == Mouse::Left)
-                        menu.mouseReleased();
+                case Event::MouseMoved:
+                    menu.mouseMoved();
                     break;
             }
         }
 
         window.clear();
-        
         menu.draw(window);
-
         window.display();
-
-        if (menu.queueExit)
-            window.close();
     }
 
     return 0;
