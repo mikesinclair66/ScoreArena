@@ -21,14 +21,18 @@ class Menu {
 	bool queueExit = false;
 
 public:
+	static const int CHAR_SIZE = 45;//the size of a character in a label
+
 	Menu(int, int);
 	void draw(RenderWindow&);
+	void select(int);
 	bool isActive() { return active; }
 	void setActive(bool active, RenderWindow&);
 	void activateSelected();
 	void keyPressed();
 	void keyReleased(Event);
 	void mouseMoved();
+	void mouseReleased();
 	void setExitQueue(bool val) { queueExit = val; }
 	bool getExitQueue() { return queueExit; }
 };

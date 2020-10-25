@@ -27,8 +27,14 @@ class Selector : public RectangleShape {
 	};
 
 	static const int NUM_PAGES = 4;
+	const int SELECTOR_SPACE = 30;//space below the text
+	const int SELECTOR_HEIGHT = 15;
+	Clock clock;
 
 public:
-	static const int CHAR_SIZE = 45;//the size of a character in a label
 	Set sets[NUM_PAGES];
+	
+	Selector();
+	void select(int s, int p);
+	void draw(RenderWindow &window, int page, Text t);
 };

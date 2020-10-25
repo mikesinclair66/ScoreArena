@@ -26,8 +26,9 @@ Menu::Menu(int width, int height) {
 			throw runtime_error("Could not load Sinclair_Script font.");
 	}
 	text.setFont(font);
-	text.setCharacterSize(Selector::CHAR_SIZE);
+	text.setCharacterSize(CHAR_SIZE);
 	text.setStyle(Text::Bold);
+
 	//page 0
 	selector.sets[0].push_back("SINGLE PLAYER", Vector2f(width / 2, height / SEGMENTS * 3));
 	selector.sets[0].push_back("MULTI PLAYER", Vector2f(width / 2, height / SEGMENTS * 4));
@@ -56,6 +57,7 @@ void Menu::draw(RenderWindow& window) {
 
 		//draw options
 		selector.sets[page].draw(window, text);
+		selector.draw(window, page, text);
 	}
 }
 
@@ -99,17 +101,20 @@ void Menu::activateSelected() {
 void Menu::keyPressed() {
 	if (isActive()) {
 		bool up = false, down = false;
+		int nSelected = selector.sets[page].getSelected();
 
 		if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W))
-			selector.sets[page].select(selector.sets[page].getSelected() - 1);
+			nSelected--;
 		else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S))
-			selector.sets[page].select(selector.sets[page].getSelected() + 1);
+			nSelected++;
 
 		//if selected var goes out of bound, return to opposite end
-		if (selector.sets[page].getSelected() < 1)
-			selector.sets[page].select(selector.sets[page].getOptionsLength());
-		else if (selector.sets[page].getSelected() > selector.sets[page].getOptionsLength())
-			selector.sets[page].select(1);
+		if (nSelected < 1)
+			nSelected = selector.sets[page].getOptionsLength();
+		else if (nSelected > selector.sets[page].getOptionsLength())
+			nSelected = 1;
+
+		select(nSelected);
 	}
 }
 
@@ -121,12 +126,35 @@ void Menu::keyReleased(Event k) {
 }
 
 void Menu::mouseMoved() {
-	Vector2i pos = Mouse::getPosition();
+	if (isActive()) {
+		Vector2i pos = Mouse::getPosition();
+		int selected = 0;
 
-	for (int i = 0; i < selector.sets[page].getOptionsLength(); i++) {
-		String label = selector.sets[page].getLabel(i);
-		Vector2f location = selector.sets[page].getLocation(i);
+		for (int i = 0; i < selector.sets[page].getOptionsLength(); i++) {
+			String label = selector.sets[page].getLabel(i);
+			Vector2f location = selector.sets[page].getLocation(i);
 
-		//TODO check if mouse is in bounds
+			if (pos.x >= location.x - (float)(label.getSize() * text.getCharacterSize()) / 2
+				&& pos.x <= location.x + (float)(label.getSize() * text.getCharacterSize()) / 2
+				&& pos.y >= location.y - text.getCharacterSize() / 2
+				&& pos.y <= location.y + text.getCharacterSize() / 2) {
+				selected = i + 1;
+				break;
+			}
+		}
+
+		select(selected);
+	}
+}
+
+void Menu::mouseReleased() {
+	if (isActive())
+		activateSelected();
+}
+
+void Menu::select(int selected) {
+	if (selected != selector.sets[page].getSelected()) {
+		selector.sets[page].select(selected);
+		selector.select(selected, page);
 	}
 }

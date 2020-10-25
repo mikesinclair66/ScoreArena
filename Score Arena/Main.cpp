@@ -39,6 +39,10 @@ int main()
                 case Event::MouseMoved:
                     menu.mouseMoved();
                     break;
+
+                case Event::MouseButtonReleased:
+                    if (event.mouseButton.button == Mouse::Left)
+                        menu.mouseReleased();
             }
         }
 
