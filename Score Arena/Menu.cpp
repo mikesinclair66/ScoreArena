@@ -80,6 +80,11 @@ void Menu::draw(RenderWindow& window) {
 			colorSelect[0].draw(window);
 			colorSelect[1].draw(window);
 			powerSelect.draw(window);
+			arsenals[0].draw(window);
+			if(!singlePlayer)
+				arsenals[1].draw(window);
+			
+			//draw selectable powers
 			sprite.setTexture(powerTextures[powerSelect.slot]);
 			Vector2f startPos = powerSelect.getPosition();
 			sprite.setPosition(Vector2f(startPos.x - 85, startPos.y - 85));
@@ -89,6 +94,28 @@ void Menu::draw(RenderWindow& window) {
 				spriteRect.top + spriteRect.height / 2.0f);
 			*/
 			window.draw(sprite);
+
+			//powers in arsenal slots
+			for (int i = 0; i < 3; i++) {
+				int slot = arsenals[0].containers[i].slot;
+				if (slot > 0) {
+					Vector2f cPos = arsenals[0].containers[i].getPosition();
+					sprite.setTexture(powerTextures[slot - 1]);
+					sprite.setPosition(Vector2f(cPos.x - 85, cPos.y - 85));
+					window.draw(sprite);
+				}
+			}
+			if (!singlePlayer) {
+				for (int i = 0; i < 3; i++) {
+					int slot = arsenals[1].containers[i].slot;
+					if (slot > 0) {
+						Vector2f cPos = arsenals[1].containers[i].getPosition();
+						sprite.setTexture(powerTextures[slot - 1]);
+						sprite.setPosition(Vector2f(cPos.x - 85, cPos.y - 85));
+						window.draw(sprite);
+					}
+				}
+			}
 			break;
 		}
 
@@ -125,6 +152,7 @@ void Menu::activateSelected() {
 			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
 			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
+			arsenals[0].setLocation(Vector2f(width * 5 / 6, height));
 			break;
 		case 2:
 			clear(page);
@@ -134,6 +162,8 @@ void Menu::activateSelected() {
 			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
 			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
+			arsenals[0].setLocation(Vector2f(width * 3 / 4, height));
+			arsenals[1].setLocation(Vector2f(width * 11 / 12, height));
 			break;
 		case 3:
 			clear(page);
@@ -213,21 +243,29 @@ void Menu::mouseMoved() {
 			}
 		}
 
-		//check if a chooser is selected
-		colorSelect[0].requestSelect(pos);
-		colorSelect[1].requestSelect(pos);
-		powerSelect.requestSelect(pos);
-
 		select(selected);
+
+		//check if a chooser is selected
+		if (page == 1) {
+			colorSelect[0].requestSelect(pos);
+			colorSelect[1].requestSelect(pos);
+			powerSelect.requestSelect(pos);
+		}
 	}
 }
 
 void Menu::mouseReleased() {
 	if (isActive()) {
 		activateSelected();
-		colorSelect[0].activateSelected();
-		colorSelect[1].activateSelected();
-		powerSelect.activateSelected();
+		
+		if (page == 1) {
+			colorSelect[0].activateSelected();
+			colorSelect[1].activateSelected();
+			powerSelect.activateSelected();
+			arsenals[0].mouseReleased(powerSelect.slot);
+			if (!singlePlayer)
+				arsenals[1].mouseReleased(powerSelect.slot);
+		}
 	}
 }
 

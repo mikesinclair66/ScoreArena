@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "selector.h"
+#include "arsenal.h"
 #include "chooser.h"
+#include "selector.h"
 
 using namespace std;
 using namespace sf;
@@ -27,6 +28,7 @@ class Menu {
 	Chooser powerSelect;
 	const int SPACE_CSELECT = 80, SPACE_PSELECT = 175;
 	Texture powerTextures[6];
+	Arsenal arsenals[2];
 
 public:
 	static const int CHAR_SIZE = 45;//the size of a character in a label
