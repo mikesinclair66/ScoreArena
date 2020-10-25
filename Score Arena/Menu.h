@@ -25,7 +25,8 @@ class Menu {
 	bool singlePlayer;
 	Chooser colorSelect[2];
 	Chooser powerSelect;
-	const int SPACE_CSELECT = 80, SPACE_PSELECT = 100;
+	const int SPACE_CSELECT = 80, SPACE_PSELECT = 175;
+	Texture powerTextures[6];
 
 public:
 	static const int CHAR_SIZE = 45;//the size of a character in a label
@@ -36,6 +37,7 @@ public:
 	bool isActive() { return active; }
 	void setActive(bool active, RenderWindow&);
 	void activateSelected();
+	void clear(int);
 	void keyPressed();
 	void keyReleased(Event);
 	void mouseMoved();

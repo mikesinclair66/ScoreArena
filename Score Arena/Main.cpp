@@ -24,22 +24,18 @@ int main()
                 case Event::Closed:
                     window.close();
                     break;
-
                 case Event::KeyPressed:
                     if (Keyboard::isKeyPressed(Keyboard::Escape))
                         window.close();
                     else
                         menu.keyPressed();
                     break;
-
                 case Event::KeyReleased:
                     menu.keyReleased(event);
                     break;
-                    
                 case Event::MouseMoved:
                     menu.mouseMoved();
                     break;
-
                 case Event::MouseButtonReleased:
                     if (event.mouseButton.button == Mouse::Left)
                         menu.mouseReleased();

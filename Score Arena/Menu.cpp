@@ -38,6 +38,23 @@ Menu::Menu(int width, int height) {
 	//page 1
 	selector.sets[1].push_back("BACK", Vector2f(width / 8, height / SEGMENTS));
 	selector.sets[1].push_back("START!", Vector2f(width / 2, height * 6 / SEGMENTS));
+	powerSelect.setSlotMax(6);
+	bool powersLoaded = true;
+	if (!powerTextures[0].loadFromFile("res\\attack.png"))
+		powersLoaded = false;
+	if (!powerTextures[1].loadFromFile("res\\absorb.png"))
+		powersLoaded = false;
+	if (!powerTextures[2].loadFromFile("res\\fire.png"))
+		powersLoaded = false;
+	if (!powerTextures[3].loadFromFile("res\\frozen.png"))
+		powersLoaded = false;
+	if (!powerTextures[4].loadFromFile("res\\invincibility.png"))
+		powersLoaded = false;
+	if (!powerTextures[5].loadFromFile("res\\lightning.png"))
+		powersLoaded = false;
+
+	if (!powersLoaded)
+		throw runtime_error("Couldn\'t load power textures.");
 }
 
 void Menu::draw(RenderWindow& window) {
@@ -59,12 +76,19 @@ void Menu::draw(RenderWindow& window) {
 			sprite.setPosition(Vector2f(width / 2 - title.getSize().x / 2, height / SEGMENTS * 1));
 			window.draw(sprite);
 			break;
-
 		case 1:
 			colorSelect[0].draw(window);
-			if (!singlePlayer)
-				colorSelect[1].draw(window);
+			colorSelect[1].draw(window);
 			powerSelect.draw(window);
+			sprite.setTexture(powerTextures[powerSelect.slot]);
+			Vector2f startPos = powerSelect.getPosition();
+			sprite.setPosition(Vector2f(startPos.x - 85, startPos.y - 85));
+			/*
+			FloatRect spriteRect = sprite.getLocalBounds();
+			sprite.setOrigin(spriteRect.left + spriteRect.width / 2.0f,
+				spriteRect.top + spriteRect.height / 2.0f);
+			*/
+			window.draw(sprite);
 			break;
 		}
 
@@ -94,22 +118,25 @@ void Menu::activateSelected() {
 	if (page == 0) {
 		switch (selector.sets[page].getSelected()) {
 		case 1:
-			selector.sets[0].select(0);
+			clear(page);
 			page = 1;
 			//add commands for single player page
 			singlePlayer = true;
-			colorSelect[0].setPosition(Vector2f(width / 6, height / 4), SPACE_CSELECT);
+			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
+			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			break;
 		case 2:
+			clear(page);
 			page = 1;
 			//add commands for multi player page
 			singlePlayer = false;
-			colorSelect[0].setPosition(Vector2f(width / 6, height / 4), SPACE_CSELECT);
-			colorSelect[1].setPosition(Vector2f(width / 6, height * 3 / 4), SPACE_CSELECT);
+			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
+			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			break;
 		case 3:
+			clear(page);
 			page = 3;//page 3 as page 2 is for selecting the map
 			break;
 		case 4:
@@ -120,10 +147,23 @@ void Menu::activateSelected() {
 	else if (page == 1) {
 		switch (selector.sets[page].getSelected()) {
 		case 1:
-			selector.sets[1].select(0);
+			clear(page);
 			page = 0;
 			break;
 		}
+	}
+}
+
+void Menu::clear(int page) {
+	selector.sets[page].select(0);
+
+	if (page == 1) {
+		colorSelect[0].select(0);
+		colorSelect[0].slot = 0;
+		colorSelect[1].select(0);
+		colorSelect[1].slot = 0;
+		powerSelect.select(0);
+		powerSelect.slot = 0;
 	}
 }
 
@@ -159,6 +199,7 @@ void Menu::mouseMoved() {
 		Vector2i pos = Mouse::getPosition();
 		int selected = 0;
 
+		//check if an option is selected
 		for (int i = 0; i < selector.sets[page].getOptionsLength(); i++) {
 			String label = selector.sets[page].getLabel(i);
 			Vector2f location = selector.sets[page].getLocation(i);
@@ -172,13 +213,22 @@ void Menu::mouseMoved() {
 			}
 		}
 
+		//check if a chooser is selected
+		colorSelect[0].requestSelect(pos);
+		colorSelect[1].requestSelect(pos);
+		powerSelect.requestSelect(pos);
+
 		select(selected);
 	}
 }
 
 void Menu::mouseReleased() {
-	if (isActive())
+	if (isActive()) {
 		activateSelected();
+		colorSelect[0].activateSelected();
+		colorSelect[1].activateSelected();
+		powerSelect.activateSelected();
+	}
 }
 
 void Menu::select(int selected) {
