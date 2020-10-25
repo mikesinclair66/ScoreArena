@@ -30,10 +30,14 @@ Menu::Menu(int width, int height) {
 	text.setStyle(Text::Bold);
 
 	//page 0
-	selector.sets[0].push_back("SINGLE PLAYER", Vector2f(width / 2, height / SEGMENTS * 3));
-	selector.sets[0].push_back("MULTI PLAYER", Vector2f(width / 2, height / SEGMENTS * 4));
-	selector.sets[0].push_back("OPTIONS", Vector2f(width / 2, height / SEGMENTS * 5));
-	selector.sets[0].push_back("EXIT", Vector2f(width / 2, height / SEGMENTS * 6));
+	selector.sets[0].push_back("SINGLE PLAYER", Vector2f(width / 2, height * 3 / SEGMENTS));
+	selector.sets[0].push_back("MULTI PLAYER", Vector2f(width / 2, height * 4 / SEGMENTS));
+	selector.sets[0].push_back("OPTIONS", Vector2f(width / 2, height * 5 / SEGMENTS));
+	selector.sets[0].push_back("EXIT", Vector2f(width / 2, height * 6 / SEGMENTS));
+
+	//page 1
+	selector.sets[1].push_back("BACK", Vector2f(width / 8, height / SEGMENTS));
+	selector.sets[1].push_back("START!", Vector2f(width / 2, height * 6 / SEGMENTS));
 }
 
 void Menu::draw(RenderWindow& window) {
@@ -49,10 +53,19 @@ void Menu::draw(RenderWindow& window) {
 		}
 
 		//draw title on first page
-		if (page == 0) {
+		switch (page) {
+		case 0:
 			sprite.setTexture(title);
 			sprite.setPosition(Vector2f(width / 2 - title.getSize().x / 2, height / SEGMENTS * 1));
 			window.draw(sprite);
+			break;
+
+		case 1:
+			colorSelect[0].draw(window);
+			if (!singlePlayer)
+				colorSelect[1].draw(window);
+			powerSelect.draw(window);
+			break;
 		}
 
 		//draw options
@@ -81,18 +94,34 @@ void Menu::activateSelected() {
 	if (page == 0) {
 		switch (selector.sets[page].getSelected()) {
 		case 1:
+			selector.sets[0].select(0);
 			page = 1;
 			//add commands for single player page
+			singlePlayer = true;
+			colorSelect[0].setPosition(Vector2f(width / 6, height / 4), SPACE_CSELECT);
+			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			break;
 		case 2:
 			page = 1;
 			//add commands for multi player page
+			singlePlayer = false;
+			colorSelect[0].setPosition(Vector2f(width / 6, height / 4), SPACE_CSELECT);
+			colorSelect[1].setPosition(Vector2f(width / 6, height * 3 / 4), SPACE_CSELECT);
+			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			break;
 		case 3:
 			page = 3;//page 3 as page 2 is for selecting the map
 			break;
 		case 4:
 			setExitQueue(true);
+			break;
+		}
+	}
+	else if (page == 1) {
+		switch (selector.sets[page].getSelected()) {
+		case 1:
+			selector.sets[1].select(0);
+			page = 0;
 			break;
 		}
 	}

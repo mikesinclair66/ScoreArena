@@ -9,8 +9,9 @@ void Selector::select(int selected, int page) {
 		Vector2f location = sets[page].getLocation(selected - 1);
 		setPosition(Vector2f(location.x, location.y + SELECTOR_SPACE));
 		setSize(Vector2f(SELECTOR_HEIGHT, SELECTOR_HEIGHT));
-		clock.restart();
 	}
+
+	clock.restart();
 }
 
 void Selector::draw(RenderWindow& window, int page, Text t) {

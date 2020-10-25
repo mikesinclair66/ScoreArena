@@ -2,6 +2,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "selector.h"
+#include "chooser.h"
 
 using namespace std;
 using namespace sf;
@@ -19,6 +20,12 @@ class Menu {
 	Text text;
 	Selector selector;
 	bool queueExit = false;
+
+	//power select page
+	bool singlePlayer;
+	Chooser colorSelect[2];
+	Chooser powerSelect;
+	const int SPACE_CSELECT = 80, SPACE_PSELECT = 100;
 
 public:
 	static const int CHAR_SIZE = 45;//the size of a character in a label
