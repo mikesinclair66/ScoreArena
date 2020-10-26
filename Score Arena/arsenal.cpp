@@ -1,5 +1,7 @@
 #include "arsenal.h"
 
+using namespace MenuItems;
+
 Arsenal::Arsenal() {
 	for (int i = 0; i < 3; i++) {
 		containers[i].setSize(Vector2f(200, 200));

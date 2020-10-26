@@ -1,7 +1,12 @@
+#include <iostream>
+#include "map.h"
 #include "menu.h"
 #include "selector.h"
 
+using namespace Game;
+using namespace MenuItems;
 using namespace sf;
+using namespace std;
 
 int main()
 {
@@ -12,13 +17,42 @@ int main()
     Menu menu(vm.width, vm.height);
     menu.setActive(true, window);
 
+    Map map(vm.width, vm.height);
+
     while (window.isOpen())
     {
         if (menu.getExitQueue())
             window.close();
         if (menu.getStartGameQueue()) {
             //get map texture and required stats to start game
+            switch (menu.getSelectedMap()) {
+            case 1:
+                //map = map1();
+                break;
+            case 2:
 
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            default:
+                throw runtime_error("Selected map variable not recorded.");
+                break;
+            }
+            map.loadTexture(menu.getMapTexture());
+            map.initPoints();
+            map.setActive(true);
+
+            //return game queue to false since it now has been activated
             menu.setStartGameQueue(false);
         }
 
@@ -49,6 +83,7 @@ int main()
 
         window.clear();
         menu.draw(window);
+        map.draw(window);
         window.display();
     }
 

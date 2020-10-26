@@ -1,5 +1,7 @@
 #include "mapIcon.h"
 
+using namespace MenuItems;
+
 MapIcon::MapIcon() {
 	setOutlineColor(Color::Black);
 	setOutlineThickness(8);

@@ -1,5 +1,7 @@
 #include "message.h"
 
+using namespace MenuItems;
+
 void Message::draw(RenderWindow& window, Text t) {
 	if (checkActive() && activated) {
 		t.setFillColor(Color::Red);

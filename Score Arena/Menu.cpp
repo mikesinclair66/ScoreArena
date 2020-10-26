@@ -2,6 +2,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace MenuItems;
 
 Menu::Menu(int width, int height) {
 	this->width = width;
@@ -214,6 +215,10 @@ void Menu::draw(RenderWindow& window) {
 	}
 }
 
+/// <summary>
+/// Draws the price and damage of a selected power
+/// under the specified slot.
+/// </summary>
 void Menu::drawStats(RenderWindow& window, Text text, Vector2f startPos, int slot) {
 	//draw price and damage of powers
 	text.setFillColor(Color::Green);

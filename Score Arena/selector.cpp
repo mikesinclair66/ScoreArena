@@ -1,5 +1,7 @@
 #include "selector.h"
 
+using namespace MenuItems;
+
 Selector::Selector() {
 	setFillColor(Color(255, 255, 255, 127));
 }

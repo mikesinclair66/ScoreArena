@@ -1,6 +1,7 @@
 #include <iostream>
 #include "chooser.h"
 
+using namespace MenuItems;
 using namespace std;
 
 Chooser::Chooser() {
