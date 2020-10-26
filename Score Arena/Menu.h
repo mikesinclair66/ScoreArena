@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "arsenal.h"
 #include "chooser.h"
+#include "mapIcon.h"
 #include "message.h"
 #include "selector.h"
 
@@ -21,7 +22,7 @@ class Menu {
 	Font font;
 	Text text;
 	Selector selector;
-	bool queueExit = false;
+	bool queueExit = false, queueStartGame = false;
 
 	//power select page
 	bool singlePlayer;
@@ -48,6 +49,10 @@ class Menu {
 	Arsenal arsenals[2];
 	Message msg;
 
+	//map select page
+	MapIcon maps[6];
+	int selectedMap;
+
 public:
 	static const int CHAR_SIZE = 45;//the size of a character in a label
 
@@ -57,6 +62,7 @@ public:
 	void select(int);
 	bool isActive() { return active; }
 	void setActive(bool active, RenderWindow&);
+	void setActive(bool active) { this->active = false; }
 	void activateSelected();
 	void clear(int);
 	bool checkPowersFilled();
@@ -65,7 +71,9 @@ public:
 	void mouseMoved();
 	void mouseReleased();
 	void setExitQueue(bool val) { queueExit = val; }
+	void setStartGameQueue(bool val) { queueStartGame = val; }
 	bool getExitQueue() { return queueExit; }
+	bool getStartGameQueue() { return queueStartGame; }
 	Color getSkinColor(int slot);
 	Color getSkinOutlineColor(int slot);
 };

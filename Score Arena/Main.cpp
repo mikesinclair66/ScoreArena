@@ -16,6 +16,11 @@ int main()
     {
         if (menu.getExitQueue())
             window.close();
+        if (menu.getStartGameQueue()) {
+            //get map texture and required stats to start game
+
+            menu.setStartGameQueue(false);
+        }
 
         Event event;
         while (window.pollEvent(event))

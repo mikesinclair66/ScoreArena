@@ -36,7 +36,7 @@ Menu::Menu(int width, int height) {
 	selector.sets[0].push_back("EXIT", Vector2f(width / 2, height * 6 / SEGMENTS));
 
 	//page 1
-	selector.sets[1].push_back("BACK", Vector2f(width / 8, height / SEGMENTS));
+	selector.sets[1].push_back("BACK", Vector2f(width / 12, height / 12));
 	selector.sets[1].push_back("START!", Vector2f(width / 2, height * 6 / SEGMENTS));
 	colorSelect[0].setSlotMax(7);
 	colorSelect[1].setSlotMax(7);
@@ -65,9 +65,56 @@ Menu::Menu(int width, int height) {
 	FloatRect o1 = pSkins[0].getLocalBounds(), o2 = pSkins[1].getLocalBounds();
 	pSkins[0].setOrigin(o1.left + o1.width / 2.0f, o1.top + o1.height / 2.0f);
 	pSkins[1].setOrigin(o2.left + o2.width / 2.0f, o2.top + o2.height / 2.0f);
+	colorSelect[1].slot = 1;
 
 	msg.setPosition(Vector2f(width / 2, height / 12));
 	msg.setMsg("You must select a power for each power slot before beginning.");
+
+	//page 2
+	selector.sets[2].push_back("BACK", Vector2f(width / 12, height / 12));
+
+	FloatRect bounds;
+	maps[0].loadImage("res\\map1Bg.jpg");
+	maps[0].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[0].setPosition(Vector2f(width / 5, height * 1.5f / 5));
+	bounds = maps[0].getLocalBounds();
+	maps[0].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+
+	maps[1].loadImage("res\\lava.jpg");
+	maps[1].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[1].setPosition(Vector2f(width * 2.5f / 5, height * 1.5f / 5));
+	bounds = maps[1].getLocalBounds();
+	maps[1].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+
+	maps[2].loadImage("res\\bg3.jpg");
+	maps[2].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[2].setPosition(Vector2f(width * 4 / 5, height * 1.5f / 5));
+	bounds = maps[2].getLocalBounds();
+	maps[2].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+
+	maps[3].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[3].setPosition(Vector2f(width / 5, height * 3.5f / 5));
+	bounds = maps[3].getLocalBounds();
+	maps[3].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+	maps[3].setDisabled(true);
+
+	maps[4].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[4].setPosition(Vector2f(width * 2.5f / 5, height * 3.5f / 5));
+	bounds = maps[4].getLocalBounds();
+	maps[4].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+	maps[4].setDisabled(true);
+
+	maps[5].setSize(Vector2f(width / 5, height * 1.5f / 5));
+	maps[5].setPosition(Vector2f(width * 4 / 5, height * 3.5f / 5));
+	bounds = maps[5].getLocalBounds();
+	maps[5].setOrigin(bounds.left + bounds.width / 2.0f,
+		bounds.top + bounds.height / 2.0f);
+	maps[5].setDisabled(true);
 }
 
 void Menu::draw(RenderWindow& window) {
@@ -121,9 +168,9 @@ void Menu::draw(RenderWindow& window) {
 			window.draw(pSkins[1]);
 			
 			//draw selectable powers
-			Vector2f startPos = powerSelect.getPosition();
 			sprite.setTexture(powerTextures[powerSelect.slot]);
-			sprite.setPosition(Vector2f(startPos.x - 85, startPos.y - 85));
+			sprite.setPosition(Vector2f(powerSelect.getPosition().x - 85,
+				powerSelect.getPosition().y - 85));
 			/*
 			FloatRect spriteRect = sprite.getLocalBounds();
 			sprite.setOrigin(spriteRect.left + spriteRect.width / 2.0f,
@@ -154,6 +201,10 @@ void Menu::draw(RenderWindow& window) {
 			}
 
 			msg.draw(window, text);
+			break;
+		case 2:
+			for (int i = 0; i < 6; i++)
+				maps[i].draw(window, text);
 			break;
 		}
 
@@ -254,6 +305,13 @@ void Menu::activateSelected() {
 			break;
 		}
 	}
+	else if (page == 2) {
+		switch (selector.sets[page].getSelected()) {
+		case 1:
+			clear(page);
+			page = 1;
+		}
+	}
 }
 
 void Menu::clear(int page) {
@@ -263,7 +321,7 @@ void Menu::clear(int page) {
 		colorSelect[0].select(0);
 		colorSelect[0].slot = 0;
 		colorSelect[1].select(0);
-		colorSelect[1].slot = 0;
+		colorSelect[1].slot = 1;
 		powerSelect.select(0);
 		powerSelect.slot = 0;
 		arsenals[0].clear();
@@ -343,6 +401,20 @@ void Menu::mouseMoved() {
 			colorSelect[1].requestSelect(pos);
 			powerSelect.requestSelect(pos);
 		}
+
+		//check if a map is selected
+		if (page == 2) {
+			for (int i = 0; i < 6; i++) {
+				if (maps[i].requestSelect(pos)) {
+					selectedMap = i + 1;
+					break;
+				}
+
+				//if the loop goes through on move with no map selected, restore selectedMap
+				if (i == 5)
+					selectedMap = 0;
+			}
+		}
 	}
 }
 
@@ -352,11 +424,23 @@ void Menu::mouseReleased() {
 		
 		if (page == 1) {
 			colorSelect[0].activateSelected();
+			//if first color selector matches the second, skip to next color
+			if (colorSelect[0].slot == colorSelect[1].slot)
+				colorSelect[0].activateSelected();
 			colorSelect[1].activateSelected();
+			if (colorSelect[1].slot == colorSelect[0].slot)
+				colorSelect[1].activateSelected();
 			powerSelect.activateSelected();
 			arsenals[0].mouseReleased(powerSelect.slot);
 			if (!singlePlayer)
 				arsenals[1].mouseReleased(powerSelect.slot);
+		}
+		else if (page == 2) {
+			if (selectedMap > 0) {
+				//close menu and go to game
+				setActive(false);
+				setStartGameQueue(true);
+			}
 		}
 	}
 }

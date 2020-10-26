@@ -1,5 +1,6 @@
 ﻿  Main.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(26,26): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  mapIcon.cpp
   Menu.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(26,26): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(33,77): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
@@ -42,7 +43,7 @@ C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(36,52): warning C424
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(39,64): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(39,65): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
@@ -64,32 +65,92 @@ C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(40,54): warning C424
           ]
 C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(61,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(62,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(69,45): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(70,45): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(69,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(70,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(80,36): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(74,65): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(80,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(74,52): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(89,85): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(78,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(89,42): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(79,37): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(85,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(92,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(93,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(98,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(99,37): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(105,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(112,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(113,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(127,36): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(127,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(136,85): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(136,42): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=unsigned int
@@ -98,96 +159,96 @@ C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(89,42): warning C424
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(212,58): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(263,58): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(212,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(263,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(214,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(265,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(214,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(265,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(216,55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(267,55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(216,43): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(267,43): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(217,52): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(268,52): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(217,47): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(268,47): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(224,58): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(275,58): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(224,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(275,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(226,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(277,62): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(226,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(277,46): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(228,55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(279,55): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(228,43): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(279,43): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(229,52): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(280,52): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(229,47): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(280,47): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(230,54): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(281,54): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(230,48): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\Menu.cpp(281,48): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-  message.cpp
   Generating Code...
+C:\Users\user\source\repos\Score Arena\Score Arena\mapIcon.cpp(26): warning C4715: 'MapIcon::loadImage': not all control paths return a value
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe
