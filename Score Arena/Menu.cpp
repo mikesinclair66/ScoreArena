@@ -38,6 +38,8 @@ Menu::Menu(int width, int height) {
 	//page 1
 	selector.sets[1].push_back("BACK", Vector2f(width / 8, height / SEGMENTS));
 	selector.sets[1].push_back("START!", Vector2f(width / 2, height * 6 / SEGMENTS));
+	colorSelect[0].setSlotMax(7);
+	colorSelect[1].setSlotMax(7);
 	powerSelect.setSlotMax(6);
 	bool powersLoaded = true;
 	if (!powerTextures[0].loadFromFile("res\\attack.png"))
@@ -55,6 +57,17 @@ Menu::Menu(int width, int height) {
 
 	if (!powersLoaded)
 		throw runtime_error("Couldn\'t load power textures.");
+
+	pSkins[0].setRadius(SPACE_CSELECT / 2 - 20);
+	pSkins[1].setRadius(SPACE_CSELECT / 2 - 20);
+	pSkins[0].setOutlineThickness(5);
+	pSkins[1].setOutlineThickness(5);
+	FloatRect o1 = pSkins[0].getLocalBounds(), o2 = pSkins[1].getLocalBounds();
+	pSkins[0].setOrigin(o1.left + o1.width / 2.0f, o1.top + o1.height / 2.0f);
+	pSkins[1].setOrigin(o2.left + o2.width / 2.0f, o2.top + o2.height / 2.0f);
+
+	msg.setPosition(Vector2f(width / 2, height / 12));
+	msg.setMsg("You must select a power for each power slot before beginning.");
 }
 
 void Menu::draw(RenderWindow& window) {
@@ -80,13 +93,36 @@ void Menu::draw(RenderWindow& window) {
 			colorSelect[0].draw(window);
 			colorSelect[1].draw(window);
 			powerSelect.draw(window);
+			
+			drawStats(window, text, powerSelect.getPosition(), powerSelect.slot);
+
+			//draw arsenals along with power prices
 			arsenals[0].draw(window);
-			if(!singlePlayer)
+			for (int i = 0; i < 3; i++) {
+				int slot = arsenals[0].containers[i].slot;
+				if (slot > 0)
+					drawStats(window, text, arsenals[0].containers[i].getPosition(), slot - 1);
+			}
+			if(!singlePlayer){
 				arsenals[1].draw(window);
+				for (int i = 0; i < 3; i++) {
+					int slot = arsenals[1].containers[i].slot;
+					if (slot > 0)
+						drawStats(window, text, arsenals[1].containers[i].getPosition(), slot - 1);
+				}
+			}
+
+			//draw player skins
+			pSkins[0].setFillColor(getSkinColor(colorSelect[0].slot));
+			pSkins[0].setOutlineColor(getSkinOutlineColor(colorSelect[0].slot));
+			pSkins[1].setFillColor(getSkinColor(colorSelect[1].slot));
+			pSkins[1].setOutlineColor(getSkinOutlineColor(colorSelect[1].slot));
+			window.draw(pSkins[0]);
+			window.draw(pSkins[1]);
 			
 			//draw selectable powers
-			sprite.setTexture(powerTextures[powerSelect.slot]);
 			Vector2f startPos = powerSelect.getPosition();
+			sprite.setTexture(powerTextures[powerSelect.slot]);
 			sprite.setPosition(Vector2f(startPos.x - 85, startPos.y - 85));
 			/*
 			FloatRect spriteRect = sprite.getLocalBounds();
@@ -116,12 +152,36 @@ void Menu::draw(RenderWindow& window) {
 					}
 				}
 			}
+
+			msg.draw(window, text);
 			break;
 		}
 
 		//draw options
 		selector.sets[page].draw(window, text);
 		selector.draw(window, page, text);
+	}
+}
+
+void Menu::drawStats(RenderWindow& window, Text text, Vector2f startPos, int slot) {
+	//draw price and damage of powers
+	text.setFillColor(Color::Green);
+	text.setString("$" + to_string(powerPrices[slot]));
+	FloatRect rect = text.getLocalBounds();
+	text.setOrigin(Vector2f(rect.left + rect.width / 2.0f, text.getOrigin().y));
+	if (slot < 3) {
+		text.setPosition(Vector2f(startPos.x - 60, startPos.y + 120));
+		window.draw(text);
+
+		//draw power damage
+		text.setFillColor(Color::Red);
+		text.setString(to_string(powerDmg[slot]) + "X");
+		text.setPosition(Vector2f(startPos.x + 60, startPos.y + 120));
+		window.draw(text);
+	}
+	else {
+		text.setPosition(Vector2f(startPos.x, startPos.y + 120));
+		window.draw(text);
 	}
 }
 
@@ -150,7 +210,9 @@ void Menu::activateSelected() {
 			//add commands for single player page
 			singlePlayer = true;
 			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
+			pSkins[0].setPosition(colorSelect[0].getPosition());
 			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
+			pSkins[1].setPosition(colorSelect[1].getPosition());
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			arsenals[0].setLocation(Vector2f(width * 5 / 6, height));
 			break;
@@ -160,7 +222,9 @@ void Menu::activateSelected() {
 			//add commands for multi player page
 			singlePlayer = false;
 			colorSelect[0].setPosition(Vector2f(width / 6, height / 3), SPACE_CSELECT);
+			pSkins[0].setPosition(colorSelect[0].getPosition());
 			colorSelect[1].setPosition(Vector2f(width / 6, height * 2 / 3), SPACE_CSELECT);
+			pSkins[1].setPosition(colorSelect[1].getPosition());
 			powerSelect.setPosition(Vector2f(width / 2, height / 2), SPACE_PSELECT);
 			arsenals[0].setLocation(Vector2f(width * 3 / 4, height));
 			arsenals[1].setLocation(Vector2f(width * 11 / 12, height));
@@ -180,6 +244,14 @@ void Menu::activateSelected() {
 			clear(page);
 			page = 0;
 			break;
+		case 2:
+			if (checkPowersFilled()) {
+				msg.deactivate();
+				page = 2;
+			}
+			else
+				msg.activate();
+			break;
 		}
 	}
 }
@@ -194,6 +266,26 @@ void Menu::clear(int page) {
 		colorSelect[1].slot = 0;
 		powerSelect.select(0);
 		powerSelect.slot = 0;
+		arsenals[0].clear();
+		arsenals[1].clear();
+		msg.deactivate();
+	}
+}
+
+bool Menu::checkPowersFilled() {
+	if (singlePlayer) {
+		for (int i = 0; i < 3; i++) {
+			if (arsenals[0].containers[i].slot == 0)
+				return false;
+		}
+		return true;
+	}
+	else {
+		for (int i = 0; i < 3; i++) {
+			if (arsenals[0].containers[i].slot == 0 || arsenals[1].containers[i].slot == 0)
+				return false;
+		}
+		return true;
 	}
 }
 
@@ -274,4 +366,64 @@ void Menu::select(int selected) {
 		selector.sets[page].select(selected);
 		selector.select(selected, page);
 	}
+}
+
+Color Menu::getSkinColor(int slot) {
+	Color c;
+
+	switch (slot) {
+	case 0:
+		c = Color(0, 255, 68);//green
+		break;
+	case 1:
+		c = Color(255, 251, 0);//yellow
+		break;
+	case 2:
+		c = Color::Red;//red
+		break;
+	case 3:
+		c = Color(0, 255, 255);//cyan
+		break;
+	case 4:
+		c = Color::Blue;//blue
+		break;
+	case 5:
+		c = Color(208, 0, 255);//magenta
+		break;
+	case 6:
+		c = Color(255, 0, 166);//pink
+		break;
+	}
+
+	return c;
+}
+
+Color Menu::getSkinOutlineColor(int slot) {
+	Color c;
+
+	switch (slot) {
+	case 0:
+		c = Color(0, 140, 37);
+		break;
+	case 1:
+		c = Color(138, 135, 0);
+		break;
+	case 2:
+		c = Color(138, 0, 0);
+		break;
+	case 3:
+		c = Color(0, 128, 128);
+		break;
+	case 4:
+		c = Color(0, 22, 145);
+		break;
+	case 5:
+		c = Color(115, 0, 140);
+		break;
+	case 6:
+		c = Color(135, 0, 88);
+		break;
+	}
+
+	return c;
 }

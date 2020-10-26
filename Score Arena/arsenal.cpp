@@ -33,6 +33,11 @@ void Arsenal::setLocation(Vector2f location) {
 	}
 }
 
+void Arsenal::clear() {
+	for (int i = 0; i < 3; i++)
+		containers[i].slot = 0;
+}
+
 void Arsenal::mouseReleased(int slot) {
 	Vector2i pos = Mouse::getPosition();
 

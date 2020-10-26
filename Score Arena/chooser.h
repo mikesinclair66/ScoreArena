@@ -7,7 +7,6 @@ class Chooser {
 	const int ARROW_SIZE = 100;
 	const int ARROW_OUTLINE = 10;
 	Vector2f pos;
-	CircleShape a1, a2;
 	int selected = 0;
 	int slotMax = 5;
 	void initArrow(CircleShape&, bool);
@@ -16,6 +15,7 @@ public:
 	/* A chooser has a specified amount of slots. For the power select, the number
 	of available powers is the number of slots. */
 	int slot = 0;
+	CircleShape a1, a2;
 
 	Chooser();
 	void draw(RenderWindow&);

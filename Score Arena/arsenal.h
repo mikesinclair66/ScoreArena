@@ -20,5 +20,6 @@ public:
 	Arsenal();
 	void draw(RenderWindow&);
 	void setLocation(Vector2f);
+	void clear();
 	void mouseReleased(int slot);
 };
