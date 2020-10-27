@@ -51,6 +51,9 @@ int main()
             map.loadTexture(menu.getMapTexture());
             map.initPoints();
             map.setActive(true);
+            map.players[1].setCpu(menu.isCpu());
+            map.players[0].setKeyBindings(menu.getBindings(0));
+            map.players[1].setKeyBindings(menu.getBindings(1));
 
             //return game queue to false since it now has been activated
             menu.setStartGameQueue(false);

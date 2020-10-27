@@ -54,6 +54,14 @@ namespace MenuItems {
 		MapIcon maps[6];
 		int selectedMap;
 
+		//key bindings page
+		Keyboard bindings1[7] = {
+			//TODO
+		};
+		Keyboard bindings2[7] = {
+			//TODO
+		}
+
 	public:
 		static const int CHAR_SIZE = 45;//the size of a character in a label
 
@@ -73,11 +81,18 @@ namespace MenuItems {
 		void mouseReleased();
 		void setExitQueue(bool val) { queueExit = val; }
 		void setStartGameQueue(bool val) { queueStartGame = val; }
+		bool isCpu() { return singlePlayer; }
 		bool getExitQueue() { return queueExit; }
 		bool getStartGameQueue() { return queueStartGame; }
 		Color getSkinColor(int slot);
 		Color getSkinOutlineColor(int slot);
 		int getSelectedMap() { return selectedMap; }
 		Texture getMapTexture() { return *maps[selectedMap - 1].getTexture(); }
+		Keyboard* getBindings(int playerNo) {
+			if (playerNo == 0)
+				return bindings1;
+			else
+				return bindings2;
+		}
 	};
 }

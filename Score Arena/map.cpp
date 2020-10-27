@@ -6,9 +6,10 @@ using namespace Game;
 Map::Map(int width, int height) {
 	this->width = width;
 	this->height = height;
+	resolution = sqrt(pow(width, 2) + pow(height, 2));
 
 	//pointSize is calculated using pythagorean theorem (resolution)
-	pointSize = (sqrt(pow(width, 2) + pow(height, 2))) / POINT_SIZE_MOD;
+	pointSize = resolution / POINT_SIZE_MOD;
 	for(int i = 0; i < POINTS; i++)
 		points[i].setSize(Vector2f(pointSize, pointSize));
 
@@ -29,6 +30,9 @@ void Map::draw(RenderWindow& window) {
 
 		for (int i = 0; i < POINTS; i++)
 			points[i].draw(window);
+
+		players[0].draw(window);
+		players[1].draw(window);
 	}
 }
 
@@ -54,6 +58,7 @@ void Map::randomizeLocation(int i) {
 
 		overlap = false;
 
+		//check previous point positions to see if they overlap with current point
 		for (int j = 0; j < i; j++) {
 			Vector2f otherPos = points[j].getPosition();
 			if (((pos.x >= otherPos.x && pos.x <= otherPos.x + pointSize) ||

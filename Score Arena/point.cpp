@@ -5,7 +5,7 @@
 using namespace Game;
 
 Point::Point() {
-	shadowColor = Color(50, 50, 50, 127);
+	shadowColor = Color(50, 50, 50, 150);
 	shadow.setFillColor(shadowColor);
 }
 
