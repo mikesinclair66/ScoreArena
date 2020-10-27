@@ -48,12 +48,9 @@ int main()
                 throw runtime_error("Selected map variable not recorded.");
                 break;
             }
-            map.loadTexture(menu.getMapTexture());
+            map.loadMenuStats(menu);
             map.initPoints();
             map.setActive(true);
-            map.players[1].setCpu(menu.isCpu());
-            map.players[0].setKeyBindings(menu.getBindings(0));
-            map.players[1].setKeyBindings(menu.getBindings(1));
 
             //return game queue to false since it now has been activated
             menu.setStartGameQueue(false);
@@ -69,11 +66,20 @@ int main()
                 case Event::KeyPressed:
                     if (Keyboard::isKeyPressed(Keyboard::Escape))
                         window.close();
-                    else
+                    else {
                         menu.keyPressed();
+                        if (map.isActive()) {
+                            map.players[0].keyPressed(map.clock);
+                            map.players[1].keyPressed(map.clock);
+                        }
+                    }
                     break;
                 case Event::KeyReleased:
                     menu.keyReleased(event);
+                    if (map.isActive()) {
+                        map.players[0].keyReleased(event, map.clock);
+                        map.players[1].keyReleased(event, map.clock);
+                    }
                     break;
                 case Event::MouseMoved:
                     menu.mouseMoved();

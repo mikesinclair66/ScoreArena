@@ -10,6 +10,15 @@ Map::Map(int width, int height) {
 
 	//pointSize is calculated using pythagorean theorem (resolution)
 	pointSize = resolution / POINT_SIZE_MOD;
+
+	//set size and location of players based on screen size
+	players[0].setRadius(resolution / (POINT_SIZE_MOD / 3));
+	players[1].setRadius(resolution / (POINT_SIZE_MOD / 3));
+	players[0].setPosition(Vector2f(width / 4 - players[0].getRadius() / 2,
+		height / 2 - players[0].getRadius() / 2));
+	players[1].setPosition(Vector2f(width * 3 / 4 - players[1].getRadius() / 2,
+		height / 2 - players[1].getRadius() / 2));
+
 	for(int i = 0; i < POINTS; i++)
 		points[i].setSize(Vector2f(pointSize, pointSize));
 
@@ -31,6 +40,7 @@ void Map::draw(RenderWindow& window) {
 		for (int i = 0; i < POINTS; i++)
 			points[i].draw(window);
 
+		
 		players[0].draw(window);
 		players[1].draw(window);
 	}
@@ -38,6 +48,17 @@ void Map::draw(RenderWindow& window) {
 
 void Map::loadTexture(Texture t) {
 	this->t = t;
+}
+
+void Map::loadMenuStats(MenuItems::Menu& menu) {
+	loadTexture(menu.getMapTexture());
+	players[0].setFillColor(menu.getPlayerColor(0));
+	players[0].setOutlineColor(menu.getPlayerOutlineColor(0));
+	players[1].setFillColor(menu.getPlayerColor(1));
+	players[1].setOutlineColor(menu.getPlayerOutlineColor(1));
+	players[1].setCpu(menu.isCpu());
+	players[0].setKeyBindings(menu.getBindings(0));
+	players[1].setKeyBindings(menu.getBindings(1));
 }
 
 void Map::initPoints() {

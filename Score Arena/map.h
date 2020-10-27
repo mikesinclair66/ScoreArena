@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "menu.h"
 #include "player.h"
 #include "point.h"
 
@@ -19,10 +20,12 @@ namespace Game {
 
 	public:
 		Player players[2];
+		Clock clock;
 
 		Map(int, int);
 		void draw(RenderWindow&);
 		void loadTexture(Texture);
+		void loadMenuStats(MenuItems::Menu&);
 		void initPoints();
 		//randomizes location of specified point
 		void randomizeLocation(int);

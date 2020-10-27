@@ -150,6 +150,14 @@ void Menu::draw(RenderWindow& window) {
 				int slot = arsenals[0].containers[i].slot;
 				if (slot > 0)
 					drawStats(window, text, arsenals[0].containers[i].getPosition(), slot - 1);
+
+				//draw key bindings by containers
+				Vector2f containerPos = arsenals[0].containers[i].getPosition();
+				text.setString(getBindingString(bindings1[i + 1]));
+				text.setFillColor(Color::Yellow);
+				text.setPosition(Vector2f(containerPos.x - 155 - text.getCharacterSize() / 2,
+					containerPos.y - text.getCharacterSize() / 2));
+				window.draw(text);
 			}
 			if(!singlePlayer){
 				arsenals[1].draw(window);
@@ -157,6 +165,14 @@ void Menu::draw(RenderWindow& window) {
 					int slot = arsenals[1].containers[i].slot;
 					if (slot > 0)
 						drawStats(window, text, arsenals[1].containers[i].getPosition(), slot - 1);
+
+					//draw key bindings by containers
+					Vector2f containerPos = arsenals[1].containers[i].getPosition();
+					text.setString(getBindingString(bindings2[i + 1]));
+					text.setFillColor(Color::Yellow);
+					text.setPosition(Vector2f(containerPos.x - 155 - text.getCharacterSize() / 2,
+						containerPos.y - text.getCharacterSize() / 2));
+					window.draw(text);
 				}
 			}
 
@@ -361,6 +377,8 @@ void Menu::keyPressed() {
 			nSelected--;
 		else if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S))
 			nSelected++;
+		else
+			return;
 
 		//if selected var goes out of bound, return to opposite end
 		if (nSelected < 1)

@@ -55,11 +55,116 @@ namespace MenuItems {
 		int selectedMap;
 
 		//key bindings page
-		Keyboard bindings1[7] = {
-			//TODO
+		Keyboard::Key bindings1[8] = {
+			Keyboard::X,
+			Keyboard::E,
+			Keyboard::R,
+			Keyboard::T,
+			Keyboard::W,
+			Keyboard::D,
+			Keyboard::S,
+			Keyboard::A
 		};
-		Keyboard bindings2[7] = {
-			//TODO
+		Keyboard::Key bindings2[8] = {
+			Keyboard::L,
+			Keyboard::I,
+			Keyboard::O,
+			Keyboard::P,
+			Keyboard::Up,
+			Keyboard::Right,
+			Keyboard::Down,
+			Keyboard::Left
+		};
+
+		/// <summary>
+		/// Returns string based on key since key does not have
+		/// toString() function.
+		/// </summary>
+		string getBindingString(Keyboard::Key key) {
+			string binding;
+
+			switch (key) {
+			case Keyboard::Q:
+				binding = "Q";
+				break;
+			case Keyboard::W:
+				binding = "W";
+				break;
+			case Keyboard::E:
+				binding = "E";
+				break;
+			case Keyboard::R:
+				binding = "R";
+				break;
+			case Keyboard::T:
+				binding = "T";
+				break;
+			case Keyboard::Y:
+				binding = "Y";
+				break;
+			case Keyboard::U:
+				binding = "U";
+				break;
+			case Keyboard::I:
+				binding = "I";
+				break;
+			case Keyboard::O:
+				binding = "O";
+				break;
+			case Keyboard::P:
+				binding = "P";
+				break;
+			case Keyboard::A:
+				binding = "A";
+				break;
+			case Keyboard::S:
+				binding = "S";
+				break;
+			case Keyboard::D:
+				binding = "D";
+				break;
+			case Keyboard::F:
+				binding = "F";
+				break;
+			case Keyboard::G:
+				binding = "G";
+				break;
+			case Keyboard::H:
+				binding = "H";
+				break;
+			case Keyboard::J:
+				binding = "J";
+				break;
+			case Keyboard::K:
+				binding = "K";
+				break;
+			case Keyboard::L:
+				binding = "L";
+				break;
+			case Keyboard::Z:
+				binding = "Z";
+				break;
+			case Keyboard::X:
+				binding = "X";
+				break;
+			case Keyboard::C:
+				binding = "C";
+				break;
+			case Keyboard::V:
+				binding = "V";
+				break;
+			case Keyboard::B:
+				binding = "B";
+				break;
+			case Keyboard::N:
+				binding = "N";
+				break;
+			case Keyboard::M:
+				binding = "M";
+				break;
+			}
+
+			return binding;
 		}
 
 	public:
@@ -86,9 +191,12 @@ namespace MenuItems {
 		bool getStartGameQueue() { return queueStartGame; }
 		Color getSkinColor(int slot);
 		Color getSkinOutlineColor(int slot);
+		Color getPlayerColor(int player) { return getSkinColor(colorSelect[player].slot); }
+		Color getPlayerOutlineColor(int player) { return
+			getSkinOutlineColor(colorSelect[player].slot); }
 		int getSelectedMap() { return selectedMap; }
 		Texture getMapTexture() { return *maps[selectedMap - 1].getTexture(); }
-		Keyboard* getBindings(int playerNo) {
+		Keyboard::Key* getBindings(int playerNo) {
 			if (playerNo == 0)
 				return bindings1;
 			else
