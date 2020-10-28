@@ -8,9 +8,10 @@ namespace Game {
 
 	public:
 		AttackArsenal();
-		void draw(RenderWindow&) override;
+		void draw(RenderWindow&, Sprite, Text);
 		bool isVisible() { return visible; }
 		void setLocation(Vector2f) override;
 		void setVisible(bool visible) { this->visible = visible; }
+		void setPowerSlot(int container, int slot) { containers[container].slot = slot; }
 	};
 }

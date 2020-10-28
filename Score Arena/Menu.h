@@ -32,7 +32,6 @@ namespace MenuItems {
 		int pSkinColors[2];
 		Chooser powerSelect;
 		const int SPACE_CSELECT = 200, SPACE_PSELECT = 175;
-		Texture powerTextures[6];
 		Arsenal arsenals[2];
 		Message msg;
 
@@ -64,6 +63,7 @@ namespace MenuItems {
 
 	public:
 		static const int CHAR_SIZE = 45;//the size of a character in a label
+		static Texture powerTextures[6];
 		static int powerPrices[6];
 		static int powerDmg[3];
 
@@ -98,6 +98,9 @@ namespace MenuItems {
 				return bindings1;
 			else
 				return bindings2;
+		}
+		int getPowerSlot(int player, int slot) {
+			return arsenals[player].containers[slot].slot;
 		}
 		/// <summary>
 		/// Returns string based on key since key does not have

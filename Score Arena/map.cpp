@@ -64,8 +64,8 @@ void Map::draw(RenderWindow& window) {
 			frameCount = 0;
 		}
 
-		players[0].draw(window);
-		players[1].draw(window);
+		players[0].draw(window, text);
+		players[1].draw(window, text);
 	}
 }
 
@@ -82,6 +82,10 @@ void Map::loadMenuStats(MenuItems::Menu& menu) {
 	players[1].setCpu(menu.isCpu());
 	players[0].setKeyBindings(menu.getBindings(0));
 	players[1].setKeyBindings(menu.getBindings(1));
+	for (int i = 0; i < 3; i++) {
+		players[0].arsenal.setPowerSlot(i, menu.getPowerSlot(0, i));
+		players[1].arsenal.setPowerSlot(i, menu.getPowerSlot(1, i));
+	}
 }
 
 void Map::initPoints() {

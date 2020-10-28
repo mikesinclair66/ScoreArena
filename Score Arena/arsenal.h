@@ -21,7 +21,7 @@ namespace MenuItems {
 		Container containers[3];
 
 		Arsenal();
-		virtual void draw(RenderWindow&);
+		void draw(RenderWindow&);
 		virtual void setLocation(Vector2f);
 		void clear();
 		void mouseReleased(int slot);

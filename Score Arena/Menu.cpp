@@ -6,6 +6,7 @@ using namespace MenuItems;
 
 int Menu::powerPrices[] = {20, 30, 40, 40, 40, 40};
 int Menu::powerDmg[] = {30, 20, 15};
+Texture Menu::powerTextures[] = { Texture(), Texture(), Texture(), Texture(), Texture(), Texture() };
 
 Menu::Menu(int width, int height) {
 	this->width = width;

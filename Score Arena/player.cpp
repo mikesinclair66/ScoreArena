@@ -6,10 +6,10 @@ Player::Player() {
 	setOutlineThickness(5);
 }
 
-void Player::draw(RenderWindow& window) {
+void Player::draw(RenderWindow& window, Text t) {
 	window.draw(*this);
 	if (arsenal.isVisible())
-		arsenal.draw(window);
+		arsenal.draw(window, sprite, t);
 }
 
 void Player::move(Vector2f mapSize) {
