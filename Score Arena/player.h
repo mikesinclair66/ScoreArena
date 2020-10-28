@@ -22,11 +22,12 @@ namespace Game {
 
 		//power variables
 		Sprite sprite;
-		Power powers[3];
+		int powerQueue = 0;//queue can be used for powers 1-3; 0 means no power queued
 
 	public:
 		int score = SCORE_DEFAULT;
 		AttackArsenal arsenal;
+		Power powers[3];
 
 		Player();
 		void initPowers();
@@ -49,7 +50,9 @@ namespace Game {
 				this->bindings[i] = bindings[i];
 		}
 		void setCurSpeed(int curSpeed) { this->curSpeed = curSpeed; }
+		void setPowerQueue(int powerQueue) { this->powerQueue = powerQueue; }
 		int getCurSpeed() { return curSpeed; }
+		int getPowerQueue() { return powerQueue; }
 		void keyPressed(Clock);
 		void keyReleased(Event, Clock);
 	};

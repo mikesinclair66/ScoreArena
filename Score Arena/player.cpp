@@ -9,6 +9,40 @@ Player::Player() {
 }
 
 void Player::initPowers() {
+	if (isCpu) {
+		//randomize powers
+		srand(time(NULL));
+
+		for (int i = 0; i < 3; i++) {
+			int powerNo = rand() % 6 + 1;
+			switch (powerNo) {
+			case 1:
+				powers[i] = Attack();
+				break;
+			case 2:
+				powers[i] = Absorb();
+				break;
+			case 3:
+				powers[i] = Fire();
+				break;
+			case 4:
+				powers[i] = Freeze();
+				break;
+			case 5:
+				powers[i] = Shield();
+				break;
+			case 6:
+				powers[i] = Speed();
+				break;
+			default:
+				throw std::runtime_error("Power was not properly stored.");
+				break;
+			}
+		}
+
+		return;
+	}
+
 	for (int i = 0; i < 3; i++) {
 		switch (arsenal.getPowerSlot(i)) {
 		case 1:
@@ -110,13 +144,13 @@ void Player::keyReleased(Event e, Clock clock) {
 			arsenal.setVisible(!arsenal.isVisible());
 		}
 		else if (e.key.code == bindings[1]) {
-			//attack 1
+			powerQueue = 1;
 		}
 		else if (e.key.code == bindings[2]) {
-			//attack 2
+			powerQueue = 2;
 		}
 		else if (e.key.code == bindings[3]) {
-			//attack 3
+			powerQueue = 3;
 		}
 		else if (e.key.code == bindings[4]) {
 			upR = true;

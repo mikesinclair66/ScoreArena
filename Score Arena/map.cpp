@@ -1,6 +1,7 @@
 #include <math.h>
 #include "map.h"
 #include "menu.h"
+#include <iostream>
 
 using namespace Game;
 
@@ -56,6 +57,17 @@ void Map::draw(RenderWindow& window) {
 			players[1].move(mapSize);
 			requestPointCollision(players[0]);
 			requestPointCollision(players[1]);
+
+			//use powers when requested
+			for (int i = 0; i < 2; i++) {
+				int powerQueue = players[i].getPowerQueue();
+				if (powerQueue > 0) {
+					//TODO players[i].powers[powerQueue - 1].start();
+					std::cout << "Player #" << (i + 1) << " used power #" << powerQueue << "." << std::endl;
+					players[i].setPowerQueue(0);
+					std::cout << "Power setback: " << players[i].getPowerQueue() << std::endl; 
+				}
+			}
 		}
 
 		frameCount = curFrame;
@@ -82,6 +94,7 @@ void Map::loadMenuStats(MenuItems::Menu& menu) {
 	players[1].setCpu(menu.isCpu());
 	players[0].setKeyBindings(menu.getBindings(0));
 	players[1].setKeyBindings(menu.getBindings(1));
+	//gets the power slots from the menu
 	for (int i = 0; i < 3; i++) {
 		players[0].arsenal.setPowerSlot(i, menu.getPowerSlot(0, i));
 		players[1].arsenal.setPowerSlot(i, menu.getPowerSlot(1, i));
