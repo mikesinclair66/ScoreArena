@@ -12,9 +12,12 @@ void Player::initPowers() {
 	if (isCpu) {
 		//randomize powers
 		srand(time(NULL));
+		int prevPower[2];
 
 		for (int i = 0; i < 3; i++) {
+			//TODO ensure powerNo to be unique from other random powers
 			int powerNo = rand() % 6 + 1;
+			
 			switch (powerNo) {
 			case 1:
 				powers[i] = Attack();

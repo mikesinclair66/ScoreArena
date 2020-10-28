@@ -1,4 +1,5 @@
 ﻿  player.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\player.cpp(14,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\player.cpp(101,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\player.cpp(15,7): warning C4101: 'prevPower': unreferenced local variable
+C:\Users\user\source\repos\Score Arena\Score Arena\player.cpp(104,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe
