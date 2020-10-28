@@ -21,6 +21,8 @@ namespace Game {
 	public:
 		Player players[2];
 		Clock clock;
+		int frameCount = 0;//frames since clock last restarted
+		const int FRAME_LIMIT = 40;
 
 		Map(int, int);
 		void draw(RenderWindow&);
@@ -29,6 +31,7 @@ namespace Game {
 		void initPoints();
 		//randomizes location of specified point
 		void randomizeLocation(int);
+		void requestPointCollision(Player);
 		void setActive(bool active) { this->active = active; }
 		bool isActive() { return active; }
 		Color getSkinColor(int slot);

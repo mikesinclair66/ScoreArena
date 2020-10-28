@@ -10,20 +10,51 @@ void Player::draw(RenderWindow& window) {
 	window.draw(*this);
 }
 
+void Player::move(Vector2f mapSize) {
+	Vector2f pos = getPosition();
+	Vector2f nPos = Vector2f(pos.x, pos.y);
+
+	if (!upR)
+		nPos.y -= speed;
+	if (!rightR)
+		nPos.x += speed;
+	if (!downR)
+		nPos.y += speed;
+	if (!leftR)
+		nPos.x -= speed;
+
+	//ensure bounds
+	int pSize = getRadius() * 2;
+	if (nPos.x < 0)
+		nPos.x = 0;
+	else if (nPos.x > mapSize.x - pSize)
+		nPos.x = mapSize.x - pSize;
+	if (nPos.y < 0)
+		nPos.y = 0;
+	else if (nPos.y > mapSize.y - pSize)
+		nPos.y = mapSize.y - pSize;
+
+	setPosition(nPos);
+}
+
 void Player::keyPressed(Clock clock) {
 	//if the player is a cpu, it doesn't react to key event
 	if (!isCpu) {
 		if (Keyboard::isKeyPressed(bindings[4])) {
-			//up
+			if (downR)
+				upR = false;
 		}
-		else if (Keyboard::isKeyPressed(bindings[5])) {
-			//right
+		if (Keyboard::isKeyPressed(bindings[5])) {
+			if (leftR)
+				rightR = false;
 		}
-		else if (Keyboard::isKeyPressed(bindings[6])) {
-			//down
+		if (Keyboard::isKeyPressed(bindings[6])) {
+			if (upR)
+				downR = false;
 		}
-		else if (Keyboard::isKeyPressed(bindings[7])) {
-			//left
+		if (Keyboard::isKeyPressed(bindings[7])) {
+			if (rightR)
+				leftR = false;
 		}
 	}
 }
@@ -43,16 +74,16 @@ void Player::keyReleased(Event e, Clock clock) {
 			//attack 3
 		}
 		else if (e.key.code == bindings[4]) {
-			//stop up
+			upR = true;
 		}
 		else if (e.key.code == bindings[5]) {
-			//stop right
+			rightR = true;
 		}
 		else if (e.key.code == bindings[6]) {
-			//stop down
+			downR = true;
 		}
 		else if (e.key.code == bindings[7]) {
-			//stop left
+			leftR = true;
 		}
 	}
 }

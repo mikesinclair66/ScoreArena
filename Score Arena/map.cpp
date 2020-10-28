@@ -40,7 +40,21 @@ void Map::draw(RenderWindow& window) {
 		for (int i = 0; i < POINTS; i++)
 			points[i].draw(window);
 
-		
+		int curFrame = clock.getElapsedTime().asMilliseconds() / 20;
+		if (curFrame != frameCount) {
+			Vector2f mapSize = Vector2f(width, height);
+			players[0].move(mapSize);
+			players[1].move(mapSize);
+			requestPointCollision(players[0]);
+			requestPointCollision(players[1]);
+		}
+
+		frameCount = curFrame;
+		if (frameCount > FRAME_LIMIT) {
+			clock.restart();
+			frameCount = 0;
+		}
+
 		players[0].draw(window);
 		players[1].draw(window);
 	}
@@ -70,14 +84,14 @@ void Map::initPoints() {
 }
 
 void Map::randomizeLocation(int i) {
-	bool overlap = false;
+	bool overlapSquares = false;
 	//keep randomizing location of point until it doesn't overlap with other points
 	do {
 		Vector2f pos = Vector2f(rand() % (width - pointSize),
 			rand() % (height - pointSize));
 		points[i].setPosition(pos);
 
-		overlap = false;
+		overlapSquares = false;
 
 		//check previous point positions to see if they overlap with current point
 		for (int j = 0; j < i; j++) {
@@ -86,11 +100,25 @@ void Map::randomizeLocation(int i) {
 				(pos.x <= otherPos.x && pos.x + pointSize >= otherPos.x)) &&
 				((pos.y <= otherPos.y && pos.y + pointSize >= otherPos.y) ||
 					(pos.y >= otherPos.y && pos.y <= otherPos.y + pointSize))) {
-				overlap = true;
+				overlapSquares = true;
 				break;
 			}
 		}
-	} while (overlap);
+	} while (overlapSquares);
+}
+
+void Map::requestPointCollision(Player p) {
+	Vector2f pos = p.getPosition();
+	int size = p.getRadius() * 2;
+
+	for (int i = 0; i < POINTS; i++) {
+		Vector2f pointPos = points[i].getPosition();
+		if (pointPos.x >= pos.x - pointSize && pointPos.x <= pos.x + size
+			&& pointPos.y >= pos.y - pointSize && pointPos.y <= pos.y + size) {
+			p.score++;
+			randomizeLocation(i);
+		}
+	}
 }
 
 Color Map::getSkinColor(int slot) {
