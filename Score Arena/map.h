@@ -33,7 +33,7 @@ namespace Game {
 		void initPoints();
 		//randomizes location of specified point
 		void randomizeLocation(int);
-		void requestPointCollision(Player);
+		void requestPointCollision(Player&);
 		void setActive(bool active) { this->active = active; }
 		bool isActive() { return active; }
 		Color getSkinColor(int slot);

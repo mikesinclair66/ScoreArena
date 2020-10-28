@@ -86,6 +86,8 @@ void Map::loadMenuStats(MenuItems::Menu& menu) {
 		players[0].arsenal.setPowerSlot(i, menu.getPowerSlot(0, i));
 		players[1].arsenal.setPowerSlot(i, menu.getPowerSlot(1, i));
 	}
+	players[0].initPowers();
+	players[1].initPowers();
 }
 
 void Map::initPoints() {
@@ -120,7 +122,7 @@ void Map::randomizeLocation(int i) {
 	} while (overlapSquares);
 }
 
-void Map::requestPointCollision(Player p) {
+void Map::requestPointCollision(Player& p) {
 	Vector2f pos = p.getPosition();
 	int size = p.getRadius() * 2;
 

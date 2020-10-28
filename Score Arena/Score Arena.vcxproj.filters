@@ -48,6 +48,9 @@
     <ClCompile Include="attackArsenal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="power.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="attackArsenal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="power.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

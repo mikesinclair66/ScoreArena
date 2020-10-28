@@ -1,4 +1,6 @@
 #include "player.h"
+#include <string>
+#include <iostream>
 
 using namespace Game;
 
@@ -6,8 +8,44 @@ Player::Player() {
 	setOutlineThickness(5);
 }
 
+void Player::initPowers() {
+	for (int i = 0; i < 3; i++) {
+		switch (arsenal.getPowerSlot(i)) {
+		case 1:
+			powers[i] = Attack();
+			break;
+		case 2:
+			powers[i] = Absorb();
+			break;
+		case 3:
+			powers[i] = Fire();
+			break;
+		case 4:
+			powers[i] = Freeze();
+			break;
+		case 5:
+			powers[i] = Shield();
+			break;
+		case 6:
+			powers[i] = Speed();
+			break;
+		default:
+			throw std::runtime_error("Power was not properly stored.");
+			break;
+		}
+	}
+}
+
 void Player::draw(RenderWindow& window, Text t) {
 	window.draw(*this);
+
+	//display score
+	t.setString(std::to_string(score));
+	Vector2f pos = getPosition();
+	t.setPosition(Vector2f(pos.x - t.getCharacterSize() - 5, pos.y - t.getCharacterSize() - 5));
+	t.setFillColor(Color::Yellow);
+	window.draw(t);
+
 	if (arsenal.isVisible())
 		arsenal.draw(window, sprite, t);
 }
@@ -17,13 +55,13 @@ void Player::move(Vector2f mapSize) {
 	Vector2f nPos = Vector2f(pos.x, pos.y);
 
 	if (!upR)
-		nPos.y -= speed;
+		nPos.y -= curSpeed;
 	if (!rightR)
-		nPos.x += speed;
+		nPos.x += curSpeed;
 	if (!downR)
-		nPos.y += speed;
+		nPos.y += curSpeed;
 	if (!leftR)
-		nPos.x -= speed;
+		nPos.x -= curSpeed;
 
 	//ensure bounds
 	int pSize = getRadius() * 2;

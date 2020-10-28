@@ -161,6 +161,7 @@
     <ClCompile Include="message.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="power.cpp" />
     <ClCompile Include="selector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="message.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="power.h" />
     <ClInclude Include="selector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
