@@ -13,6 +13,8 @@ namespace Game {
 		int resolution;
 		Texture t;
 		Sprite sprite;
+		Font font;
+		Text text;
 		const static int POINTS = 100;//number of points on the map at a time
 		int pointSize;
 		const int POINT_SIZE_MOD = 75;

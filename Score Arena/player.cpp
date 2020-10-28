@@ -8,6 +8,8 @@ Player::Player() {
 
 void Player::draw(RenderWindow& window) {
 	window.draw(*this);
+	if (arsenal.isVisible())
+		arsenal.draw(window);
 }
 
 void Player::move(Vector2f mapSize) {
@@ -62,7 +64,12 @@ void Player::keyPressed(Clock clock) {
 void Player::keyReleased(Event e, Clock clock) {
 	if (!isCpu) {
 		if (e.key.code == bindings[0]) {
-			//toggle attack menu
+			if (!arsenal.isVisible()) {
+				Vector2f pos = getPosition();
+				arsenal.setLocation(Vector2f(pos.x + getRadius(), pos.y - 200));
+			}
+
+			arsenal.setVisible(!arsenal.isVisible());
 		}
 		else if (e.key.code == bindings[1]) {
 			//attack 1

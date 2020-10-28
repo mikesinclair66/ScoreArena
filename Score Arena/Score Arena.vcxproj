@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="arsenal.cpp" />
+    <ClCompile Include="attackArsenal.cpp" />
     <ClCompile Include="chooser.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="map.cpp" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arsenal.h" />
+    <ClInclude Include="attackArsenal.h" />
     <ClInclude Include="chooser.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mapIcon.h" />

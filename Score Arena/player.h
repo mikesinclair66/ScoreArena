@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "attackArsenal.h"
 
 using namespace sf;
 
@@ -9,6 +10,7 @@ namespace Game {
 		static const int BINDING_LENGTH = 8;
 		Keyboard::Key bindings[BINDING_LENGTH];//attack menu, attack 1-3, up-left
 		const int SCORE_DEFAULT = 30;
+		AttackArsenal arsenal;
 
 		//movement records
 		bool upR = true, rightR = true, downR = true, leftR = true;

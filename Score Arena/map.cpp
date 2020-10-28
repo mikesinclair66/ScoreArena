@@ -1,5 +1,6 @@
 #include <math.h>
 #include "map.h"
+#include "menu.h"
 
 using namespace Game;
 
@@ -23,6 +24,14 @@ Map::Map(int width, int height) {
 		points[i].setSize(Vector2f(pointSize, pointSize));
 
 	srand(time(NULL));
+
+	if (!font.loadFromFile("res\\Sinclairscript-Regular.ttf")) {
+		if (!font.loadFromFile("res\\Sinclairscript-Regular.otf"))
+			throw runtime_error("Could not load Sinclair_Script font.");
+	}
+	text.setFont(font);
+	text.setCharacterSize(MenuItems::Menu::CHAR_SIZE);
+	text.setStyle(Text::Bold);
 }
 
 void Map::draw(RenderWindow& window) {

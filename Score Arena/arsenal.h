@@ -13,14 +13,16 @@ namespace MenuItems {
 		};
 
 		const int CONTAINER_OUTLINE = 8;
+
+	protected:
 		const int CONTAINER_YMOD = 45;
 
 	public:
 		Container containers[3];
 
 		Arsenal();
-		void draw(RenderWindow&);
-		void setLocation(Vector2f);
+		virtual void draw(RenderWindow&);
+		virtual void setLocation(Vector2f);
 		void clear();
 		void mouseReleased(int slot);
 	};

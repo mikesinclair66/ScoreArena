@@ -33,20 +33,6 @@ namespace MenuItems {
 		Chooser powerSelect;
 		const int SPACE_CSELECT = 200, SPACE_PSELECT = 175;
 		Texture powerTextures[6];
-		int powerPrices[6] = {
-			20,//attack
-			30,//absorb
-			40,//fire
-			//TODO change the following
-			40,//freeze
-			40,//shield
-			40//speed
-		};
-		int powerDmg[3] = {
-			30,
-			20,
-			15,//damage for each shot
-		};
 		Arsenal arsenals[2];
 		Message msg;
 
@@ -76,11 +62,48 @@ namespace MenuItems {
 			Keyboard::Left
 		};
 
+	public:
+		static const int CHAR_SIZE = 45;//the size of a character in a label
+		static int powerPrices[6];
+		static int powerDmg[3];
+
+		Menu(int, int);
+		void draw(RenderWindow&);
+		static void drawStats(RenderWindow&, Text, Vector2f, int);
+		void select(int);
+		bool isActive() { return active; }
+		void setActive(bool active, RenderWindow&);
+		void setActive(bool active) { this->active = false; }
+		void activateSelected();
+		void clear(int);
+		bool checkPowersFilled();
+		void keyPressed();
+		void keyReleased(Event);
+		void mouseMoved();
+		void mouseReleased();
+		void setExitQueue(bool val) { queueExit = val; }
+		void setStartGameQueue(bool val) { queueStartGame = val; }
+		bool isCpu() { return singlePlayer; }
+		bool getExitQueue() { return queueExit; }
+		bool getStartGameQueue() { return queueStartGame; }
+		Color getSkinColor(int slot);
+		Color getSkinOutlineColor(int slot);
+		Color getPlayerColor(int player) { return getSkinColor(colorSelect[player].slot); }
+		Color getPlayerOutlineColor(int player) { return
+			getSkinOutlineColor(colorSelect[player].slot); }
+		int getSelectedMap() { return selectedMap; }
+		Texture getMapTexture() { return *maps[selectedMap - 1].getTexture(); }
+		Keyboard::Key* getBindings(int playerNo) {
+			if (playerNo == 0)
+				return bindings1;
+			else
+				return bindings2;
+		}
 		/// <summary>
 		/// Returns string based on key since key does not have
 		/// toString() function.
 		/// </summary>
-		string getBindingString(Keyboard::Key key) {
+		static string getBindingString(Keyboard::Key key) {
 			string binding;
 
 			switch (key) {
@@ -165,42 +188,6 @@ namespace MenuItems {
 			}
 
 			return binding;
-		}
-
-	public:
-		static const int CHAR_SIZE = 45;//the size of a character in a label
-
-		Menu(int, int);
-		void draw(RenderWindow&);
-		void drawStats(RenderWindow&, Text, Vector2f, int);
-		void select(int);
-		bool isActive() { return active; }
-		void setActive(bool active, RenderWindow&);
-		void setActive(bool active) { this->active = false; }
-		void activateSelected();
-		void clear(int);
-		bool checkPowersFilled();
-		void keyPressed();
-		void keyReleased(Event);
-		void mouseMoved();
-		void mouseReleased();
-		void setExitQueue(bool val) { queueExit = val; }
-		void setStartGameQueue(bool val) { queueStartGame = val; }
-		bool isCpu() { return singlePlayer; }
-		bool getExitQueue() { return queueExit; }
-		bool getStartGameQueue() { return queueStartGame; }
-		Color getSkinColor(int slot);
-		Color getSkinOutlineColor(int slot);
-		Color getPlayerColor(int player) { return getSkinColor(colorSelect[player].slot); }
-		Color getPlayerOutlineColor(int player) { return
-			getSkinOutlineColor(colorSelect[player].slot); }
-		int getSelectedMap() { return selectedMap; }
-		Texture getMapTexture() { return *maps[selectedMap - 1].getTexture(); }
-		Keyboard::Key* getBindings(int playerNo) {
-			if (playerNo == 0)
-				return bindings1;
-			else
-				return bindings2;
 		}
 	};
 }
