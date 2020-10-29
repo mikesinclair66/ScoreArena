@@ -19,6 +19,7 @@ namespace Game {
 		int pointSize;
 		const int POINT_SIZE_MOD = 75;
 		Point points[POINTS];
+		Power powers1[3], powers2[3];
 
 	public:
 		Player players[2];
@@ -31,6 +32,7 @@ namespace Game {
 		void loadTexture(Texture);
 		void loadMenuStats(MenuItems::Menu&);
 		void initPoints();
+		void initPowers();
 		//randomizes location of specified point
 		void randomizeLocation(int);
 		void requestPointCollision(Player&);

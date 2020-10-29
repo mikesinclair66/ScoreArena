@@ -53,20 +53,34 @@ void Map::draw(RenderWindow& window) {
 		int curFrame = clock.getElapsedTime().asMilliseconds() / 20;
 		if (curFrame != frameCount) {
 			Vector2f mapSize = Vector2f(width, height);
-			players[0].move(mapSize);
-			players[1].move(mapSize);
-			requestPointCollision(players[0]);
-			requestPointCollision(players[1]);
 
-			//use powers when requested
 			for (int i = 0; i < 2; i++) {
-				int powerQueue = players[i].getPowerQueue();
-				if (powerQueue > 0) {
-					//TODO players[i].powers[powerQueue - 1].start();
-					std::cout << "Player #" << (i + 1) << " used power #" << powerQueue << "." << std::endl;
-					players[i].setPowerQueue(0);
-					std::cout << "Power setback: " << players[i].getPowerQueue() << std::endl; 
+				players[i].move(mapSize);
+				requestPointCollision(players[i]);
+			}
+
+			//check for p1 power queue
+			int pq1 = players[0].getPowerQueue();
+			if (pq1 > 0) {
+				if (powers1[pq1 - 1].requiresPrice() &&
+					powers1[pq1 - 1].canAfford(players[0].score)) {
+					players[0].score -= powers1[pq1 - 1].getPrice();
+					//TODO start
 				}
+
+				players[0].setPowerQueue(0);
+			}
+
+			//repeat process for p2
+			int pq2 = players[1].getPowerQueue();
+			if (pq2 > 0) {
+				if (powers2[pq2 - 1].requiresPrice() &&
+					powers2[pq2 - 1].canAfford(players[1].score)) {
+					players[1].score -= powers2[pq2 - 1].getPrice();
+					//TODO start
+				}
+
+				players[1].setPowerQueue(0);
 			}
 		}
 
@@ -99,8 +113,7 @@ void Map::loadMenuStats(MenuItems::Menu& menu) {
 		players[0].arsenal.setPowerSlot(i, menu.getPowerSlot(0, i));
 		players[1].arsenal.setPowerSlot(i, menu.getPowerSlot(1, i));
 	}
-	players[0].initPowers();
-	players[1].initPowers();
+	initPowers();
 }
 
 void Map::initPoints() {
@@ -108,6 +121,95 @@ void Map::initPoints() {
 	for (int i = 0; i < POINTS; i++) {
 		randomizeLocation(i);
 		points[i].setFillColor(getSkinColor(rand() % 7));
+	}
+}
+
+void Map::initPowers() {
+	if (players[1].getCpu()) {
+		//randomize powers
+		srand(time(NULL));
+		int prevPower[2];
+
+		for (int i = 0; i < 3; i++) {
+			//TODO ensure powerNo to be unique from other random powers
+			int powerNo = rand() % 6 + 1;
+
+			switch (powerNo) {
+			case 1:
+				powers2[i] = Attack();
+				break;
+			case 2:
+				powers2[i] = Absorb();
+				break;
+			case 3:
+				powers2[i] = Fire();
+				break;
+			case 4:
+				powers2[i] = Freeze();
+				break;
+			case 5:
+				powers2[i] = Shield();
+				break;
+			case 6:
+				powers2[i] = Speed();
+				break;
+			default:
+				throw std::runtime_error("Power was not properly stored.");
+				break;
+			}
+		}
+
+		return;
+	}
+
+	for (int i = 0; i < 3; i++) {
+		switch (players[0].arsenal.getPowerSlot(i)) {
+		case 1:
+			powers1[i] = Attack();
+			break;
+		case 2:
+			powers1[i] = Absorb();
+			break;
+		case 3:
+			powers1[i] = Fire();
+			break;
+		case 4:
+			powers1[i] = Freeze();
+			break;
+		case 5:
+			powers1[i] = Shield();
+			break;
+		case 6:
+			powers1[i] = Speed();
+			break;
+		default:
+			throw std::runtime_error("Power was not properly stored.");
+			break;
+		}
+
+		switch (players[1].arsenal.getPowerSlot(i)) {
+		case 1:
+			powers2[i] = Attack();
+			break;
+		case 2:
+			powers2[i] = Absorb();
+			break;
+		case 3:
+			powers2[i] = Fire();
+			break;
+		case 4:
+			powers2[i] = Freeze();
+			break;
+		case 5:
+			powers2[i] = Shield();
+			break;
+		case 6:
+			powers2[i] = Speed();
+			break;
+		default:
+			throw std::runtime_error("Power was not properly stored.");
+			break;
+		}
 	}
 }
 

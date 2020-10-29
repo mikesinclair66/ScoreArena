@@ -27,10 +27,8 @@ namespace Game {
 	public:
 		int score = SCORE_DEFAULT;
 		AttackArsenal arsenal;
-		Power powers[3];
 
 		Player();
-		void initPowers();
 		void draw(RenderWindow&, Text);
 		void move(Vector2f);
 		void restoreCurSpeed() { curSpeed = SPEED; }
@@ -53,6 +51,7 @@ namespace Game {
 		void setPowerQueue(int powerQueue) { this->powerQueue = powerQueue; }
 		int getCurSpeed() { return curSpeed; }
 		int getPowerQueue() { return powerQueue; }
+		bool getCpu() { return isCpu; }
 		void keyPressed(Clock);
 		void keyReleased(Event, Clock);
 	};

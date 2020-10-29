@@ -1,10 +1,25 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "menu.h"
+
+using namespace sf;
 
 namespace Game {
 	class Power {
+	protected:
+		int powerNo = 0;//power number to powerPrice[] and powerDmg[]
+		bool priceRequired = true;//if affordability is needed to use; lose if can't afford
+		bool toggled = false;
+		int curFrame, frameDuration = 20;
+
 	public:
 		Power();
+		bool canAfford(int pScore);
+		bool requiresPrice() { return priceRequired; }
+		void start();
+		void update();
+		void end();
+		int getPrice() { return MenuItems::Menu::powerPrices[powerNo]; }
 	};
 
 	class Attack : public Power {
