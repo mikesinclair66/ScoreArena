@@ -103,6 +103,14 @@ void Map::draw(RenderWindow& window) {
 
 		players[0].draw(window, text);
 		players[1].draw(window, text);
+
+		//draw powers which need to be drawn
+		for (int i = 0; i < 3; i++) {
+			if (powers1[i]->getDrawable())
+				powers1[i]->draw(window);
+			if (powers2[i]->getDrawable())
+				powers2[i]->draw(window);
+		}
 	}
 }
 

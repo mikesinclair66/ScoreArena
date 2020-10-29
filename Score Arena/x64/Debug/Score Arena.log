@@ -1,16 +1,18 @@
 ﻿  power.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(66,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(88,32): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(70,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(83,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(88,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(110,32): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(89,37): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(111,37): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(92,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(93,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(114,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(115,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe

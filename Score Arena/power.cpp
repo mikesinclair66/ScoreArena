@@ -1,10 +1,13 @@
 #include "power.h"
-#include <iostream>
 
 using namespace Game;
 
 Power::Power() {
 	
+}
+
+void Power::draw(RenderWindow&) {
+	//method is overridden for certain powers
 }
 
 bool Power::canAfford(int pScore) {
@@ -63,21 +66,40 @@ Shield::Shield() : Power() {
 
 Speed::Speed() : Power() {
 	powerNo = 5;
+	setDrawable(true);
 	srand(time(NULL));
+}
+
+void Speed::draw(RenderWindow& window) {
+	if (toggled) {
+		for (Bolt b : bolts) {
+			b.draw(window);
+		}
+	}
 }
 
 void Speed::start(Player& player, Player& opponent) {
 	Power::start(player, opponent);
-	player.setCurSpeed(player.getCurSpeed() * 2);
-	//initEffect();
+	player.setCurSpeed(player.getCurSpeed() * 2.5f);
+	initEffect();
+
+	//locate bolts
+	Vector2f pos = player.getPosition();
+	int radius = player.getRadius();
+	bolts[0].setLocation(Vector2f(pos.x - 50, pos.y));
+	bolts[1].setLocation(Vector2f(pos.x - 50, pos.y + radius * 2));
+	bolts[2].setLocation(Vector2f(pos.x + radius * 2 + 50, pos.y));
+	bolts[3].setLocation(Vector2f(pos.x + radius * 2 + 50, pos.y + radius * 2 + 50));
 }
 
 void Speed::initEffect() {
-	for (Bolt b : bolts) {
-		b.setLineNo(rand() % (LINES_MAX - LINES_MIN) + LINES_MIN);
+	bool yellow = rand() % 2 == 0;
+
+	for (Bolt& b : bolts) {
+		b.lineNo = rand() % (LINES_MAX - LINES_MIN) + LINES_MIN;
 
 		//randomizes color between yellow and blue
-		if (rand() % 2 == 0)
+		if (yellow)
 			b.setColor(outerYellow, innerYellow);
 		else
 			b.setColor(outerBlue, innerBlue);
@@ -86,12 +108,24 @@ void Speed::initEffect() {
 		for (int i = 0; i < b.lineNo; i++) {
 			int length = rand() % (LENGTH_MAX - LENGTH_MIN) + LENGTH_MIN;
 			b.lines[i].setSize(Vector2f(length, 8));
-			b.innerLines[i].setSize(Vector2f(length, 8));
+			b.innerLines[i].setSize(Vector2f(length, 3));
 
 			int rotate = rand() % 180 + 1;
 			b.lines[i].rotate(rotate);
 			b.innerLines[i].rotate(rotate);
 		}
+	}
+}
+
+void Speed::update(Player& player, Player& opponent) {
+	Power::update(player, opponent);
+
+	if (curFrame % 10 == 0) {
+		Vector2f pos = player.getPosition();
+		bolts[curBolt++].setLocation(pos);
+
+		if (curBolt >= BOLT_NO)
+			curBolt = 0;
 	}
 }
 
