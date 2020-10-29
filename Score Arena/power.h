@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "menu.h"
+#include "player.h"
 
 using namespace sf;
 
 namespace Game {
 	class Power {
 	protected:
-		int powerNo = 0;//power number to powerPrice[] and powerDmg[]
+		int powerNo;//power number to powerPrice[] and powerDmg[]
 		bool priceRequired = true;//if affordability is needed to use; lose if can't afford
 		bool toggled = false;
 		int curFrame, frameDuration = 20;

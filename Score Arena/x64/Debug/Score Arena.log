@@ -1,6 +1,4 @@
-﻿  Main.cpp
-C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  map.cpp
+﻿  map.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(11,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(17,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
@@ -36,23 +34,16 @@ C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(55,32): warning C4244
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(130,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(131,7): warning C4101: 'prevPower': unreferenced local variable
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(221,11): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(129,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(189,11): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(220,34): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(188,34): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(242,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  player.cpp
-C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\player.cpp(39,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  power.cpp
-C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(210,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe

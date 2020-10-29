@@ -125,42 +125,8 @@ void Map::initPoints() {
 }
 
 void Map::initPowers() {
-	if (players[1].getCpu()) {
-		//randomize powers
+	if (players[1].getCpu())
 		srand(time(NULL));
-		int prevPower[2];
-
-		for (int i = 0; i < 3; i++) {
-			//TODO ensure powerNo to be unique from other random powers
-			int powerNo = rand() % 6 + 1;
-
-			switch (powerNo) {
-			case 1:
-				powers2[i] = Attack();
-				break;
-			case 2:
-				powers2[i] = Absorb();
-				break;
-			case 3:
-				powers2[i] = Fire();
-				break;
-			case 4:
-				powers2[i] = Freeze();
-				break;
-			case 5:
-				powers2[i] = Shield();
-				break;
-			case 6:
-				powers2[i] = Speed();
-				break;
-			default:
-				throw std::runtime_error("Power was not properly stored.");
-				break;
-			}
-		}
-
-		return;
-	}
 
 	for (int i = 0; i < 3; i++) {
 		switch (players[0].arsenal.getPowerSlot(i)) {
@@ -187,7 +153,9 @@ void Map::initPowers() {
 			break;
 		}
 
-		switch (players[1].arsenal.getPowerSlot(i)) {
+		//get the second player arsenal slot if in multiplayer; otherwise randomly assign power
+		int slot = ((!players[1].getCpu()) ? players[1].arsenal.getPowerSlot(i) : rand() % 6 + 1);
+		switch (slot) {
 		case 1:
 			powers2[i] = Attack();
 			break;

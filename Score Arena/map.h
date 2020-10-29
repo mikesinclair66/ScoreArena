@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "player.h"
 #include "point.h"
+#include "power.h"
 
 using namespace sf;
 

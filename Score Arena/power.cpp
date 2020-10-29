@@ -3,7 +3,7 @@
 using namespace Game;
 
 Power::Power() {
-
+	
 }
 
 bool Power::canAfford(int pScore) {
