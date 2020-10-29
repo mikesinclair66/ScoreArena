@@ -20,7 +20,7 @@ namespace Game {
 		int pointSize;
 		const int POINT_SIZE_MOD = 75;
 		Point points[POINTS];
-		Power powers1[3], powers2[3];
+		Power *powers1[3], *powers2[3];
 
 	public:
 		Player players[2];

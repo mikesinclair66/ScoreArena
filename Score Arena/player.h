@@ -10,7 +10,6 @@ namespace Game {
 		static const int BINDING_LENGTH = 8;
 		Keyboard::Key bindings[BINDING_LENGTH];//attack menu, attack 1-3, up-left
 		const int SCORE_DEFAULT = 30;
-		Color skinColor, skinOutlineColor;
 
 		//movement records
 		bool upR = true, rightR = true, downR = true, leftR = true;
@@ -26,6 +25,7 @@ namespace Game {
 	public:
 		int score = SCORE_DEFAULT;
 		AttackArsenal arsenal;
+		Color skinColor, skinOutlineColor;
 
 		Player();
 		void draw(RenderWindow&, Text);

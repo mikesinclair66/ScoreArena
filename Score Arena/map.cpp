@@ -2,6 +2,7 @@
 #include "map.h"
 #include "menu.h"
 #include <iostream>
+#include <string>
 
 using namespace Game;
 
@@ -59,13 +60,22 @@ void Map::draw(RenderWindow& window) {
 				requestPointCollision(players[i]);
 			}
 
+			//update active/toggled powers
+			for (int i = 0; i < 3; i++) {
+				if (powers1[i]->isActive())
+					powers1[i]->update(players[0], players[1]);
+				if (powers2[i]->isActive())
+					powers2[i]->update(players[1], players[0]);
+			}
+
 			//check for p1 power queue
 			int pq1 = players[0].getPowerQueue();
 			if (pq1 > 0) {
-				if (powers1[pq1 - 1].requiresPrice() &&
-					powers1[pq1 - 1].canAfford(players[0].score)) {
-					players[0].score -= powers1[pq1 - 1].getPrice();
-					//TODO start
+				if (powers1[pq1 - 1]->requiresPrice() &&
+					powers1[pq1 - 1]->canAfford(players[0].score) &&
+					!powers1[pq1 - 1]->isActive()) {
+					players[0].score -= powers1[pq1 - 1]->getPrice();
+					powers1[pq1 - 1]->start(players[0], players[1]);
 				}
 
 				players[0].setPowerQueue(0);
@@ -74,10 +84,11 @@ void Map::draw(RenderWindow& window) {
 			//repeat process for p2
 			int pq2 = players[1].getPowerQueue();
 			if (pq2 > 0) {
-				if (powers2[pq2 - 1].requiresPrice() &&
-					powers2[pq2 - 1].canAfford(players[1].score)) {
-					players[1].score -= powers2[pq2 - 1].getPrice();
-					//TODO start
+				if (powers2[pq2 - 1]->requiresPrice() &&
+					powers2[pq2 - 1]->canAfford(players[1].score) &&
+					!powers2[pq2 - 1]->isActive()) {
+					players[1].score -= powers2[pq2 - 1]->getPrice();
+					powers2[pq2 - 1]->start(players[1], players[0]);
 				}
 
 				players[1].setPowerQueue(0);
@@ -131,22 +142,22 @@ void Map::initPowers() {
 	for (int i = 0; i < 3; i++) {
 		switch (players[0].arsenal.getPowerSlot(i)) {
 		case 1:
-			powers1[i] = Attack();
+			powers1[i] = new Attack();
 			break;
 		case 2:
-			powers1[i] = Absorb();
+			powers1[i] = new Absorb();
 			break;
 		case 3:
-			powers1[i] = Fire();
+			powers1[i] = new Fire();
 			break;
 		case 4:
-			powers1[i] = Freeze();
+			powers1[i] = new Freeze();
 			break;
 		case 5:
-			powers1[i] = Shield();
+			powers1[i] = new Shield();
 			break;
 		case 6:
-			powers1[i] = Speed();
+			powers1[i] = new Speed();
 			break;
 		default:
 			throw std::runtime_error("Power was not properly stored.");
@@ -157,22 +168,22 @@ void Map::initPowers() {
 		int slot = ((!players[1].getCpu()) ? players[1].arsenal.getPowerSlot(i) : rand() % 6 + 1);
 		switch (slot) {
 		case 1:
-			powers2[i] = Attack();
+			powers2[i] = new Attack();
 			break;
 		case 2:
-			powers2[i] = Absorb();
+			powers2[i] = new Absorb();
 			break;
 		case 3:
-			powers2[i] = Fire();
+			powers2[i] = new Fire();
 			break;
 		case 4:
-			powers2[i] = Freeze();
+			powers2[i] = new Freeze();
 			break;
 		case 5:
-			powers2[i] = Shield();
+			powers2[i] = new Shield();
 			break;
 		case 6:
-			powers2[i] = Speed();
+			powers2[i] = new Speed();
 			break;
 		default:
 			throw std::runtime_error("Power was not properly stored.");
