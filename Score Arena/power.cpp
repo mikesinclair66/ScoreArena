@@ -107,12 +107,10 @@ void Speed::initEffect() {
 		//randomize the length and rotation of each line
 		for (int i = 0; i < b.lineNo; i++) {
 			int length = rand() % (LENGTH_MAX - LENGTH_MIN) + LENGTH_MIN;
-			b.lines[i].setSize(Vector2f(length, 8));
-			b.innerLines[i].setSize(Vector2f(length, 3));
+			b.lines[i].setSize(Vector2f(length, 4));
 
 			int rotate = rand() % 180 + 1;
 			b.lines[i].rotate(rotate);
-			b.innerLines[i].rotate(rotate);
 		}
 	}
 }
@@ -120,8 +118,11 @@ void Speed::initEffect() {
 void Speed::update(Player& player, Player& opponent) {
 	Power::update(player, opponent);
 
-	if (curFrame % 10 == 0) {
+	if (curFrame % 5 == 0) {
 		Vector2f pos = player.getPosition();
+		int size = player.getRadius() * 2;
+		pos.x += rand() % size;
+		pos.y += rand() % size;
 		bolts[curBolt++].setLocation(pos);
 
 		if (curBolt >= BOLT_NO)

@@ -63,25 +63,22 @@ namespace Game {
 	class Speed : public Power {
 		Color innerYellow = Color(255, 255, 175), outerYellow = Color(255, 255, 0);
 		Color innerBlue = Color(175, 255, 255), outerBlue = Color(0, 255, 255);
-		const static int LINES_MIN = 1, LINES_MAX = 4;
-		const static int LENGTH_MIN = 25, LENGTH_MAX = 50;
+		const static int LINES_MIN = 1, LINES_MAX = 5;
+		const static int LENGTH_MIN = 10, LENGTH_MAX = 25;
 
 		class Bolt {
 		public:
 			RectangleShape lines[LINES_MAX];
-			RectangleShape innerLines[LINES_MAX];
 			int lineNo;
 
 			void setColor(Color outer, Color inner) {
 				for (int i = 0; i < lineNo; i++) {
 					lines[i].setFillColor(outer);
-					innerLines[i].setFillColor(inner);
 				}
 			}
 			void setLocation(Vector2f pos) {
 				for (int i = 0; i < lineNo; i++) {
 					lines[i].setPosition(pos);
-					innerLines[i].setPosition(pos);
 
 					FloatRect boundingBox = lines[i].getGlobalBounds();
 					if (lines[i].getRotation() <= 90)
@@ -94,12 +91,11 @@ namespace Game {
 			void draw(RenderWindow& window) {
 				for (int i = 0; i < lineNo; i++) {
 					window.draw(lines[i]);
-					window.draw(innerLines[i]);
 				}
 			}
 		};
 		int curBolt = 0;
-		const static int BOLT_NO = 4;
+		const static int BOLT_NO = 5;
 		Bolt bolts[BOLT_NO];
 
 		void initEffect();

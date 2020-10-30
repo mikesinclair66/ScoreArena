@@ -8,11 +8,6 @@ C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(110,32): warning C4
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(111,37): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(114,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(115,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(113,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(123,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe
