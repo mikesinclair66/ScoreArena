@@ -49,6 +49,7 @@ namespace Game {
 		void setCurSpeed(int curSpeed) { this->curSpeed = curSpeed; }
 		void setPowerQueue(int powerQueue) { this->powerQueue = powerQueue; }
 		int getCurSpeed() { return curSpeed; }
+		int getSpeed() { return SPEED; }
 		int getPowerQueue() { return powerQueue; }
 		bool getCpu() { return isCpu; }
 		void keyPressed(Clock);

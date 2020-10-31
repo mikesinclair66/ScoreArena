@@ -107,9 +107,9 @@ void Map::draw(RenderWindow& window) {
 		//draw powers which need to be drawn
 		for (int i = 0; i < 3; i++) {
 			if (powers1[i]->getDrawable())
-				powers1[i]->draw(window);
+				powers1[i]->draw(window, players[0], players[1]);
 			if (powers2[i]->getDrawable())
-				powers2[i]->draw(window);
+				powers2[i]->draw(window, players[1], players[0]);
 		}
 	}
 }

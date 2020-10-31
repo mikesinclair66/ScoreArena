@@ -12,6 +12,8 @@ using namespace sf;
 namespace Game {
 	class Power {
 	protected:
+		bool attackLanded = false;//if true, push players away from each other
+		int pushback = 15;//frames to push player back after landed attack
 		int powerNo;//power number to powerPrice[] and powerDmg[]
 		bool priceRequired = true;//if affordability is needed to use; lose if can't afford
 		bool drawable = false;//if the power has effects that constantly need to be drawn
@@ -20,12 +22,13 @@ namespace Game {
 
 	public:
 		Power();
+		virtual void landAttack();
 		bool canAfford(int pScore);
 		bool requiresPrice() { return priceRequired; }
+		virtual void draw(RenderWindow&, Player&, Player&);
 		virtual void start(Player& player, Player& opponent);
 		virtual void update(Player& player, Player& opponent);
 		virtual void end(Player& player, Player& opponent);
-		virtual void draw(RenderWindow&);
 		void setDrawable(bool drawable) { this->drawable = drawable; }
 		bool getDrawable() { return drawable; }
 		int getPrice() { return MenuItems::Menu::powerPrices[powerNo]; }
@@ -36,16 +39,34 @@ namespace Game {
 	class Attack : public Power {
 	public:
 		Attack();
+		void start(Player& player, Player& opponent) override;
+		void update(Player& player, Player& opponent) override;
+		void end(Player& player, Player& opponent) override;
 	};
 
 	class Absorb : public Power {
+		int ppf;
+		bool ppfTooSmall = false;
+		int remaining;
+
 	public:
 		Absorb();
+		void landAttack() override;
+		void draw(RenderWindow&, Player&, Player&) override;
+		void start(Player& player, Player& opponent) override;
+		void update(Player& player, Player& opponent) override;
+		void end(Player& player, Player& opponent) override;
 	};
 
 	class Fire : public Power {
+		CircleShape innerRing, outerRing;
+		RectangleShape lineHoriz, lineVert;
+
 	public:
 		Fire();
+		void start(Player& player, Player& opponent) override;
+		void update(Player& player, Player& opponent) override;
+		void draw(RenderWindow&, Player& player, Player& opponent) override;
 	};
 
 	class Freeze : public Power {
@@ -70,6 +91,7 @@ namespace Game {
 		public:
 			RectangleShape lines[LINES_MAX];
 			int lineNo;
+			Vector2f playerPos = Vector2f(0, 0);//position within player diameter
 
 			void setColor(Color outer, Color inner) {
 				for (int i = 0; i < lineNo; i++) {
@@ -102,7 +124,7 @@ namespace Game {
 
 	public:
 		Speed();
-		void draw(RenderWindow&) override;
+		void draw(RenderWindow&, Player& player, Player& opponent) override;
 		void start(Player& player, Player& opponent) override;
 		void update(Player& player, Player& opponent) override;
 		void end(Player& player, Player& opponent) override;
