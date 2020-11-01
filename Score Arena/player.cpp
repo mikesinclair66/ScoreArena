@@ -22,7 +22,7 @@ void Player::draw(RenderWindow& window, Text t) {
 		arsenal.draw(window, sprite, t);
 }
 
-void Player::move(Vector2f mapSize) {
+void Player::move() {
 	Vector2f pos = getPosition();
 	Vector2f nPos = Vector2f(pos.x, pos.y);
 

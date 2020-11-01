@@ -21,6 +21,8 @@ Map::Map(int width, int height) {
 		height / 2 - players[0].getRadius() / 2));
 	players[1].setPosition(Vector2f(width * 3 / 4 - players[1].getRadius() / 2,
 		height / 2 - players[1].getRadius() / 2));
+	players[0].setMapSize(Vector2f(width, height));
+	players[1].setMapSize(Vector2f(width, height));
 
 	for(int i = 0; i < POINTS; i++)
 		points[i].setSize(Vector2f(pointSize, pointSize));
@@ -56,7 +58,7 @@ void Map::draw(RenderWindow& window) {
 			Vector2f mapSize = Vector2f(width, height);
 
 			for (int i = 0; i < 2; i++) {
-				players[i].move(mapSize);
+				players[i].move();
 				requestPointCollision(players[i]);
 			}
 
@@ -77,6 +79,8 @@ void Map::draw(RenderWindow& window) {
 					players[0].score -= powers1[pq1 - 1]->getPrice();
 					powers1[pq1 - 1]->start(players[0], players[1]);
 				}
+				else if (powers1[pq1 - 1]->isActive())
+					powers1[pq1 - 1]->activate();
 
 				players[0].setPowerQueue(0);
 			}
@@ -90,6 +94,8 @@ void Map::draw(RenderWindow& window) {
 					players[1].score -= powers2[pq2 - 1]->getPrice();
 					powers2[pq2 - 1]->start(players[1], players[0]);
 				}
+				else if (powers2[pq2 - 1]->isActive())
+					powers2[pq2 - 1]->activate();
 
 				players[1].setPowerQueue(0);
 			}

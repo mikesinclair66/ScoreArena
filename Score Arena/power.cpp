@@ -62,8 +62,17 @@ void Power::end(Player& player, Player& opponent) {
 	toggled = false;
 }
 
+void Power::activate() {
+	//method is overridden for certain powers
+}
+
 Attack::Attack() : Power() {
 	powerNo = 0;
+}
+
+void Attack::landAttack() {
+	Power::landAttack();
+	queueDamage = true;
 }
 
 void Attack::start(Player& player, Player& opponent) {
@@ -74,9 +83,14 @@ void Attack::start(Player& player, Player& opponent) {
 void Attack::update(Player& player, Player& opponent) {
 	Power::update(player, opponent);
 	Vector2f pos = player.getPosition(), opos = opponent.getPosition();
-	if (pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
+	if (!attackLanded && pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
 		&& pos.y >= opos.y - player.getRadius() && pos.y <= opos.y + player.getRadius())
 		landAttack();
+
+	if (queueDamage) {
+		opponent.score -= MenuItems::Menu::powerDmg[powerNo];
+		queueDamage = false;
+	}
 }
 
 void Attack::end(Player& player, Player& opponent) {
@@ -87,6 +101,10 @@ void Attack::end(Player& player, Player& opponent) {
 Absorb::Absorb() : Power() {
 	setDrawable(true);
 	powerNo = 1;
+
+	ring.setOutlineColor(Color::Green);
+	ring.setOutlineThickness(10);
+	ring.setFillColor(Color::Transparent);
 }
 
 void Absorb::landAttack() {
@@ -103,8 +121,8 @@ void Absorb::landAttack() {
 }
 
 void Absorb::draw(RenderWindow& window, Player& player, Player& opponent) {
-	if (toggled) {
-
+	if (toggled && attackLanded) {
+		window.draw(ring);
 	}
 }
 
@@ -115,7 +133,7 @@ void Absorb::start(Player& player, Player& opponent) {
 void Absorb::update(Player& player, Player& opponent) {
 	Power::update(player, opponent);
 	Vector2f pos = player.getPosition(), opos = opponent.getPosition();
-	if (pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
+	if (!attackLanded && pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
 		&& pos.y >= opos.y - player.getRadius() && pos.y <= opos.y + player.getRadius())
 		landAttack();
 
@@ -128,6 +146,13 @@ void Absorb::update(Player& player, Player& opponent) {
 			opponent.score -= remaining;
 			ppfTooSmall = false;
 		}
+
+		int radius = player.getRadius();
+		Vector2f pos = player.getPosition(), opos = opponent.getPosition();
+		pos.x += radius;
+		pos.y += radius;
+		ring.setPosition(pos);
+		ring.setSize(Vector2f(opos.x + radius - pos.x, opos.y + radius - pos.y));
 	}
 }
 
@@ -138,24 +163,35 @@ void Absorb::end(Player& player, Player& opponent) {
 Fire::Fire() : Power() {
 	powerNo = 2;
 	setDrawable(true);
+	for (int i = 0; i < BULLET_NO; i++) {
+		fired[i] = false;
+		rotation[i] = 0;
+	}
+
+	if (!bulletTexture.loadFromFile("res\\fireball.png"))
+		throw runtime_error("Error loading fireball image");
+	sprite.setTexture(bulletTexture);
+}
+
+void Fire::landAttack() {
+	Power::landAttack();
+	queueDamage = true;
 }
 
 void Fire::draw(RenderWindow& window, Player& player, Player& opponent) {
 	if (toggled) {
-		Vector2f pos = player.getPosition();
-		int radius = player.getRadius();
-		pos.x += radius;
-		pos.y += radius;
-
-		innerRing.setPosition(pos);
-		outerRing.setPosition(pos);
-		lineHoriz.setPosition(pos);
-		lineVert.setPosition(pos);
-
 		window.draw(lineHoriz);
 		window.draw(lineVert);
 		window.draw(innerRing);
 		window.draw(outerRing);
+
+		for (int i = 0; i < BULLET_NO; i++) {
+			if (!fired[i] && bulletNo > i)
+				continue;
+			sprite.setPosition(bullets[i]);
+			sprite.setRotation(rotation[i]);
+			window.draw(sprite);
+		}
 	}
 }
 
@@ -191,10 +227,164 @@ void Fire::start(Player& player, Player& opponent) {
 	FloatRect lineVerRect = lineVert.getLocalBounds();
 	lineVert.setOrigin(lineVerRect.left + lineVerRect.width / 2.0f,
 		lineVerRect.top + lineVerRect.height / 2.0f);
+
+	//make player stop moving and set controls to crosshair
+	aimPos = player.getPosition();
+	aimPos.x += pRadius;
+	aimPos.y += pRadius;
+	player.setCurSpeed(0);
+
+	//draw amount of bullets under player
+	bulletNo = 0;
+	Vector2f pos = player.getPosition();
+	int radius = player.getRadius();
+	pos.y += radius * 2;
+	int bulletWidth = bulletTexture.getSize().x;
+	for (int i = bulletNo; i < BULLET_NO; i++)
+		bullets[i] = Vector2f(pos.x + ((i + 1) * radius * 2 / BULLET_NO) - bulletWidth, pos.y);
 }
 
 void Fire::update(Player& player, Player& opponent) {
-	Power::update(player, opponent);
+	if (queueDamage) {
+		opponent.score -= MenuItems::Menu::powerDmg[powerNo] / BULLET_NO;
+		queueDamage = false;
+	}
+
+	//redefines Power::update(), only pushing back the opponent. Also gets rid of time limit
+	if (attackLanded) {
+		curFrame++;
+
+		Vector2f ppos = player.getPosition(), opos = opponent.getPosition();
+		int speed = player.getSpeed() * 2;
+
+		if (ppos.x <= opos.x) {
+			opos.x += speed;
+		}
+		else {
+			opos.x -= speed;
+		}
+
+		if (ppos.y <= opos.y) {
+			opos.y += speed;
+		}
+		else {
+			opos.y -= speed;
+		}
+
+		opponent.setPosition(opos);
+
+		if (curFrame >= frameDuration)
+			attackLanded = false;
+	}
+	//end of redefinition
+
+	int speed = player.getSpeed() * 1.75f;
+	if (player.getMovementQueue(0))
+		aimPos.y -= speed;
+	if (player.getMovementQueue(1))
+		aimPos.x += speed;
+	if (player.getMovementQueue(2))
+		aimPos.y += speed;
+	if (player.getMovementQueue(3))
+		aimPos.x -= speed;
+
+	//assign boundaries to crosshair
+	Vector2f size = player.getMapSize();
+	if (aimPos.x < 0)
+		aimPos.x = 0;
+	else if (aimPos.x > size.x)
+		aimPos.x = size.x;
+	if (aimPos.y < 0)
+		aimPos.y = 0;
+	else if (aimPos.y > size.y)
+		aimPos.y = size.y;
+
+	innerRing.setPosition(aimPos);
+	outerRing.setPosition(aimPos);
+	lineHoriz.setPosition(aimPos);
+	lineVert.setPosition(aimPos);
+	
+	bool allFalse = true;
+	for (int i = 0; i < BULLET_NO; i++) {
+		if (fired[i]) {
+			bool up = false, right = false, down = false, left = false;
+
+			if (bullets[i].x <= destination[i].x - SPEED) {
+				bullets[i].x += SPEED;
+				right = true;
+			}
+			else if (bullets[i].x >= destination[i].x + SPEED) {
+				bullets[i].x -= SPEED;
+				left = true;
+			}
+
+			if (bullets[i].y <= destination[i].y - SPEED) {
+				bullets[i].y += SPEED;
+				down = true;
+			}
+			else if (bullets[i].y >= destination[i].y + SPEED) {
+				bullets[i].y -= SPEED;
+				up = true;
+			}
+
+			if (up) {
+				if (!right && !left)
+					rotation[i] = -90;
+				else if (!right)
+					rotation[i] = -135;
+				else
+					rotation[i] = -45;
+			}
+			if (down) {
+				if (!right && !left)
+					rotation[i] = 90;
+				else if (!right)
+					rotation[i] = 135;
+				else
+					rotation[i] = 45;
+			}
+
+			if (left && !up && !right)
+				rotation[i] = -180;
+			if (right && !up && !down)
+				rotation[i] = 0;
+
+			//check for opponent contact
+			Vector2f opos = opponent.getPosition();
+			int pRadius = opponent.getRadius();
+			if (bullets[i].x >= opos.x - pRadius && bullets[i].x <= opos.x + pRadius * 3
+				&& bullets[i].y >= opos.y - pRadius && bullets[i].y <= opos.y + pRadius * 3) {
+				exploded[i] = true;
+				fired[i] = false;
+				landAttack();
+			}
+
+			if (bullets[i].x >= destination[i].x - SPEED && bullets[i].x <= destination[i].x + SPEED
+				&& bullets[i].y >= destination[i].y - SPEED && bullets[i].y
+				<= destination[i].y + SPEED) {
+				fired[i] = false;
+				exploded[i] = true;
+			}
+
+			if (fired[i])// TODO || exploded[i]
+				allFalse = false;
+		}
+	}
+
+	if (bulletNo >= BULLET_NO && allFalse && !attackLanded)
+		end(player, opponent);
+}
+
+void Fire::end(Player& player, Player& opponent) {
+	Power::end(player, opponent);
+	player.restoreCurSpeed();
+	for (int i = 0; i < BULLET_NO; i++)
+		rotation[i] = 0;
+}
+
+void Fire::activate() {
+	destination[bulletNo] = innerRing.getPosition();
+	fired[bulletNo++] = true;
 }
 
 Freeze::Freeze() : Power() {

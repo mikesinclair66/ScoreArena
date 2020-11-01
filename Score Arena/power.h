@@ -29,6 +29,7 @@ namespace Game {
 		virtual void start(Player& player, Player& opponent);
 		virtual void update(Player& player, Player& opponent);
 		virtual void end(Player& player, Player& opponent);
+		virtual void activate();
 		void setDrawable(bool drawable) { this->drawable = drawable; }
 		bool getDrawable() { return drawable; }
 		int getPrice() { return MenuItems::Menu::powerPrices[powerNo]; }
@@ -37,8 +38,11 @@ namespace Game {
 	};
 
 	class Attack : public Power {
+		bool queueDamage = false;
+
 	public:
 		Attack();
+		void landAttack() override;
 		void start(Player& player, Player& opponent) override;
 		void update(Player& player, Player& opponent) override;
 		void end(Player& player, Player& opponent) override;
@@ -48,6 +52,8 @@ namespace Game {
 		int ppf;
 		bool ppfTooSmall = false;
 		int remaining;
+
+		RectangleShape ring;
 
 	public:
 		Absorb();
@@ -59,14 +65,29 @@ namespace Game {
 	};
 
 	class Fire : public Power {
+		Texture bulletTexture;
+		Sprite sprite;
 		CircleShape innerRing, outerRing;
 		RectangleShape lineHoriz, lineVert;
+		Vector2f aimPos;
+		const static int BULLET_NO = 3, SPEED = 10;
+		int bulletNo;
+		Vector2f bullets[BULLET_NO];
+		Vector2f destination[BULLET_NO];
+		bool fired[BULLET_NO];
+		int rotation[BULLET_NO];
+		bool exploded[BULLET_NO];
+		bool up = false, right = false, down = false, left = false;
+		bool queueDamage = false;
 
 	public:
 		Fire();
+		void landAttack() override;
 		void start(Player& player, Player& opponent) override;
 		void update(Player& player, Player& opponent) override;
+		void end(Player& player, Player& opponent) override;
 		void draw(RenderWindow&, Player& player, Player& opponent) override;
+		void activate() override;
 	};
 
 	class Freeze : public Power {
