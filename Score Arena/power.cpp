@@ -88,7 +88,7 @@ void Attack::update(Player& player, Player& opponent) {
 		landAttack();
 
 	if (queueDamage) {
-		opponent.score -= MenuItems::Menu::powerDmg[powerNo];
+		opponent.damage(MenuItems::Menu::powerDmg[powerNo]);
 		queueDamage = false;
 	}
 }
@@ -138,8 +138,8 @@ void Absorb::update(Player& player, Player& opponent) {
 		landAttack();
 
 	if (attackLanded) {
-		player.score += ppf;
-		opponent.score -= ppf;
+		player.heal(ppf);
+		opponent.damage(ppf);
 
 		if (ppfTooSmall) {
 			player.score += remaining;
@@ -256,7 +256,7 @@ void Fire::start(Player& player, Player& opponent) {
 
 void Fire::update(Player& player, Player& opponent) {
 	if (queueDamage) {
-		opponent.score -= MenuItems::Menu::powerDmg[powerNo] / BULLET_NO;
+		opponent.damage(MenuItems::Menu::powerDmg[powerNo] / BULLET_NO);
 		queueDamage = false;
 	}
 

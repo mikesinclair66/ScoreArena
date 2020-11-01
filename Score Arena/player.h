@@ -30,6 +30,8 @@ namespace Game {
 
 		Player();
 		void draw(RenderWindow&, Text);
+		void damage(int);
+		void heal(int);
 		void move();
 		void restoreCurSpeed() { curSpeed = SPEED; }
 		void setCpu(bool isCpu) { this->isCpu = isCpu; }

@@ -22,6 +22,14 @@ void Player::draw(RenderWindow& window, Text t) {
 		arsenal.draw(window, sprite, t);
 }
 
+void Player::damage(int score) {
+	this->score -= score;
+}
+
+void Player::heal(int score) {
+	this->score += score;
+}
+
 void Player::move() {
 	Vector2f pos = getPosition();
 	Vector2f nPos = Vector2f(pos.x, pos.y);
