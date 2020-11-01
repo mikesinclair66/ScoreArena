@@ -166,6 +166,10 @@ Fire::Fire() : Power() {
 	for (int i = 0; i < BULLET_NO; i++) {
 		fired[i] = false;
 		rotation[i] = 0;
+		exploded[i] = false;
+		explosion[i].setFillColor(Color::Transparent);
+		explosion[i].setOutlineColor(Color::Red);
+		directHit[i] = false;
 	}
 
 	if (!bulletTexture.loadFromFile("res\\fireball.png"))
@@ -186,6 +190,10 @@ void Fire::draw(RenderWindow& window, Player& player, Player& opponent) {
 		window.draw(outerRing);
 
 		for (int i = 0; i < BULLET_NO; i++) {
+			if (exploded[i])
+				window.draw(explosion[i]);
+
+			//if the bullet is done being shot, don't draw it
 			if (!fired[i] && bulletNo > i)
 				continue;
 			sprite.setPosition(bullets[i]);
@@ -240,8 +248,10 @@ void Fire::start(Player& player, Player& opponent) {
 	int radius = player.getRadius();
 	pos.y += radius * 2;
 	int bulletWidth = bulletTexture.getSize().x;
-	for (int i = bulletNo; i < BULLET_NO; i++)
+	for (int i = bulletNo; i < BULLET_NO; i++) {
 		bullets[i] = Vector2f(pos.x + ((i + 1) * radius * 2 / BULLET_NO) - bulletWidth, pos.y);
+		directHit[i] = false;
+	}
 }
 
 void Fire::update(Player& player, Player& opponent) {
@@ -354,25 +364,65 @@ void Fire::update(Player& player, Player& opponent) {
 			int pRadius = opponent.getRadius();
 			if (bullets[i].x >= opos.x - pRadius && bullets[i].x <= opos.x + pRadius * 3
 				&& bullets[i].y >= opos.y - pRadius && bullets[i].y <= opos.y + pRadius * 3) {
-				exploded[i] = true;
 				fired[i] = false;
+				directHit[i] = true;
+				initExplosion(i);
 				landAttack();
 			}
 
-			if (bullets[i].x >= destination[i].x - SPEED && bullets[i].x <= destination[i].x + SPEED
+			else if (bullets[i].x >= destination[i].x - SPEED &&
+				bullets[i].x <= destination[i].x + SPEED
 				&& bullets[i].y >= destination[i].y - SPEED && bullets[i].y
 				<= destination[i].y + SPEED) {
 				fired[i] = false;
-				exploded[i] = true;
+				directHit[i] = false;
+				initExplosion(i);
+			}
+		}
+
+		if (exploded[i]) {
+			int radius = explosion[i].getRadius() + player.getSpeed();
+			explosion[i].setRadius(radius);
+
+			int thickness = explosion[i].getOutlineThickness();
+			if (radius < RADIUS_MAX / 2)
+				thickness += 3;
+			else if (radius >= RADIUS_MAX / 2 && thickness > 4)
+				thickness -= 3;
+			explosion[i].setOutlineThickness(thickness);
+
+			explosion[i].setPosition(Vector2f(bullets[i].x - explosion[i].getRadius(),
+				bullets[i].y - explosion[i].getRadius()));
+
+			//check for opponent contact
+			Vector2f opos = opponent.getPosition(), epos = explosion[i].getPosition();
+			int pRadius = opponent.getRadius(), eRadius = explosion[i].getRadius();
+			if (epos.x >= opos.x - eRadius * 2 && epos.x <= opos.x + eRadius * 2
+				&& epos.y >= opos.y - eRadius * 2 && epos.y <= opos.y + eRadius * 2) {
+				if (!directHit[i]) {
+					landAttack();
+					directHit[i] = true;//stops from continuously damaging opponent
+				}
 			}
 
-			if (fired[i])// TODO || exploded[i]
-				allFalse = false;
+			if (radius >= RADIUS_MAX)
+				exploded[i] = false;
 		}
+
+		if (fired[i] || exploded[i])
+			allFalse = false;
 	}
 
 	if (bulletNo >= BULLET_NO && allFalse && !attackLanded)
 		end(player, opponent);
+}
+
+void Fire::initExplosion(int i) {
+	exploded[i] = true;
+	explosion[i].setRadius(RADIUS_MIN);
+	explosion[i].setOutlineThickness(THICKNESS_MIN);
+	explosion[i].setPosition(Vector2f(bullets[i].x - explosion[i].getRadius(),
+		bullets[i].y - explosion[i].getRadius()));
 }
 
 void Fire::end(Player& player, Player& opponent) {

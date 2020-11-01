@@ -70,15 +70,21 @@ namespace Game {
 		CircleShape innerRing, outerRing;
 		RectangleShape lineHoriz, lineVert;
 		Vector2f aimPos;
-		const static int BULLET_NO = 3, SPEED = 10;
+		const static int BULLET_NO = 3, SPEED = 25;
 		int bulletNo;
 		Vector2f bullets[BULLET_NO];
 		Vector2f destination[BULLET_NO];
 		bool fired[BULLET_NO];
 		int rotation[BULLET_NO];
 		bool exploded[BULLET_NO];
+		CircleShape explosion[BULLET_NO];
+		const static int RADIUS_MIN = 5, RADIUS_MAX = 175;
+		const static int THICKNESS_MIN = 3;
+		bool directHit[BULLET_NO];//if directly hit by the missile, blast radius doesn't damage
 		bool up = false, right = false, down = false, left = false;
 		bool queueDamage = false;
+
+		void initExplosion(int);
 
 	public:
 		Fire();
