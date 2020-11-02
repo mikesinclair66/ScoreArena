@@ -53,9 +53,19 @@ void Map::draw(RenderWindow& window) {
 		for (int i = 0; i < POINTS; i++)
 			points[i].draw(window);
 
+		//update per frame
 		int curFrame = clock.getElapsedTime().asMilliseconds() / 20;
 		if (curFrame != frameCount) {
-			Vector2f mapSize = Vector2f(width, height);
+			finish(Vector2f(width, height));
+
+			if (finishAnimation.isActive())
+				finishAnimation.update();
+			if (finishAnimation.queueExit) {
+				//exit to menu
+				finishAnimation.queueExit = false;
+				setActive(false);
+				queueExit = true;
+			}
 
 			for (int i = 0; i < 2; i++) {
 				players[i].move();
@@ -117,6 +127,10 @@ void Map::draw(RenderWindow& window) {
 			if (powers2[i]->getDrawable())
 				powers2[i]->draw(window, players[1], players[0]);
 		}
+
+		//draw finish animation if needed
+		if (finishAnimation.isActive())
+			finishAnimation.draw(window, text);
 	}
 }
 
@@ -126,8 +140,10 @@ void Map::loadTexture(Texture t) {
 
 void Map::loadMenuStats(MenuItems::Menu& menu) {
 	loadTexture(menu.getMapTexture());
+	players[0].setName("Player 1");
 	players[0].setFillColor(menu.getPlayerColor(0));
 	players[0].setOutlineColor(menu.getPlayerOutlineColor(0));
+	players[1].setName("Player 2");
 	players[1].setFillColor(menu.getPlayerColor(1));
 	players[1].setOutlineColor(menu.getPlayerOutlineColor(1));
 	players[1].setCpu(menu.isCpu());
@@ -244,6 +260,17 @@ void Map::requestPointCollision(Player& p) {
 	}
 }
 
+void Map::finish(Vector2f mapSize) {
+	if (!finishAnimation.isActive()) {
+		if (players[0].score < 0)
+			finishAnimation.start(&players[1], mapSize);
+		else if (players[1].score < 0)
+			finishAnimation.start(&players[0], mapSize);
+		else
+			return;
+	}
+}
+
 Color Map::getSkinColor(int slot) {
 	Color c;
 
@@ -272,4 +299,64 @@ Color Map::getSkinColor(int slot) {
 	}
 
 	return c;
+}
+
+void FinishAnimation::start(Player* winner, Vector2f screenSize) {
+	frameCount = 0;
+	finishText = winner->getName() + " wins!";
+	finishRect.setFillColor(winner->skinColor);
+	finishRect.setOutlineColor(Color::Black);
+	finishRect.setOutlineThickness(8);
+	rectPos = Vector2f(-screenSize.x, -screenSize.y);
+	finishRect.setPosition(rectPos);
+	finishRect.setSize(screenSize);
+	textPos = Vector2f(-screenSize.x / 2, -screenSize.y / 2);
+	rectEndPos = Vector2f(0, 0);
+	textEndPos = Vector2f(screenSize.x / 2, screenSize.y / 2);
+	toggled = true;
+}
+
+void FinishAnimation::draw(RenderWindow& window, Text t) {
+	int curCharSize = t.getCharacterSize();
+	t.setCharacterSize(80);
+	t.setString(finishText);
+	t.setFillColor(Color::White);
+	finishRect.setPosition(rectPos);
+	t.setPosition(textPos);
+
+	//set local bounds
+	FloatRect rect = t.getLocalBounds();
+	t.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+
+	window.draw(finishRect);
+	window.draw(t);
+	t.setCharacterSize(curCharSize);
+}
+
+void FinishAnimation::update() {
+	frameCount++;
+
+	auto progress = [](Vector2f startPos, Vector2f endPos, int speed) {
+		if (startPos.x < endPos.x)
+			startPos.x += speed;
+		else if (startPos.x > endPos.x)
+			startPos.x = endPos.x;
+
+		if (startPos.y < endPos.y)
+			startPos.y += speed;
+		else if (startPos.y > endPos.y)
+			startPos.y = endPos.y;
+
+		return startPos;
+	};
+	rectPos = progress(rectPos, rectEndPos, SPEED);
+	textPos = progress(textPos, textEndPos, SPEED);
+
+	if (frameCount >= frameDuration)
+		end();
+}
+
+void FinishAnimation::end() {
+	toggled = false;
+	queueExit = true;
 }

@@ -107,6 +107,7 @@ namespace MenuItems {
 		void mouseMoved();
 		void mouseReleased();
 		void setExitQueue(bool val) { queueExit = val; }
+		void setPage(int page) { this->page = page; }
 		void setStartGameQueue(bool val) { queueStartGame = val; }
 		bool isCpu() { return singlePlayer; }
 		bool getExitQueue() { return queueExit; }

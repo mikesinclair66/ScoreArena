@@ -55,6 +55,14 @@ int main()
             //return game queue to false since it now has been activated
             menu.setStartGameQueue(false);
         }
+        if (map.queueExit) {
+            map.queueExit = false;
+            menu.setActive(true, window);
+            for (int i = 0; i < 2; i++) {
+                menu.select(1);
+                menu.activateSelected();
+            }
+        }
 
         Event event;
         while (window.pollEvent(event))

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 #include "attackArsenal.h"
 
 using namespace sf;
@@ -10,6 +11,7 @@ namespace Game {
 		static const int BINDING_LENGTH = 8;
 		Keyboard::Key bindings[BINDING_LENGTH];//attack menu, attack 1-3, up-left
 		const int SCORE_DEFAULT = 30;
+		std::string name;
 
 		//movement records
 		bool upR = true, rightR = true, downR = true, leftR = true;
@@ -53,9 +55,11 @@ namespace Game {
 		void setCurSpeed(int curSpeed) { this->curSpeed = curSpeed; }
 		void setPowerQueue(int powerQueue) { this->powerQueue = powerQueue; }
 		void setMapSize(Vector2f mapSize) { this->mapSize = mapSize; }
+		void setName(std::string name) { this->name = name; }
 		void setInvincible(bool invincible) { this->invincible = invincible; }
 		bool isInvincible() { return invincible; }
 		Vector2f getMapSize() { return mapSize; }
+		std::string getName() { return name; }
 		int getCurSpeed() { return curSpeed; }
 		int getSpeed() { return SPEED; }
 		int getPowerQueue() { return powerQueue; }

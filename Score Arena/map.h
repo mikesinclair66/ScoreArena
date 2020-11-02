@@ -8,6 +8,25 @@
 using namespace sf;
 
 namespace Game {
+	class FinishAnimation {
+		bool toggled = false;
+		const int SPEED = 35;
+		RectangleShape finishRect;
+		Vector2f rectPos, textPos;
+		Vector2f rectEndPos, textEndPos;
+		string finishText;
+		int frameCount = 0, frameDuration = 200;
+
+	public:
+		bool queueExit = false;
+
+		void start(Player* winner, Vector2f screenSize);
+		void draw(RenderWindow&, Text t);
+		void update();
+		void end();
+		bool isActive() { return toggled; }
+	};
+
 	class Map {
 		bool active = false;
 		int width, height;
@@ -21,8 +40,10 @@ namespace Game {
 		const int POINT_SIZE_MOD = 75;
 		Point points[POINTS];
 		Power *powers1[3], *powers2[3];
+		FinishAnimation finishAnimation;
 
 	public:
+		bool queueExit = false;
 		Player players[2];
 		Clock clock;
 		int frameCount = 0;//frames since clock last restarted
@@ -37,6 +58,7 @@ namespace Game {
 		//randomizes location of specified point
 		void randomizeLocation(int);
 		void requestPointCollision(Player&);
+		void finish(Vector2f);
 		void setActive(bool active) { this->active = active; }
 		bool isActive() { return active; }
 		Color getSkinColor(int slot);
