@@ -106,6 +106,8 @@ namespace Game {
 	class Shield : public Power {
 	public:
 		Shield();
+		void start(Player& player, Player& opponent) override;
+		void end(Player& player, Player& opponent) override;
 	};
 
 	class Speed : public Power {

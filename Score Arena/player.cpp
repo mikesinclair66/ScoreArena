@@ -23,11 +23,13 @@ void Player::draw(RenderWindow& window, Text t) {
 }
 
 void Player::damage(int score) {
-	this->score -= score;
+	if(!invincible)
+		this->score -= score;
 }
 
 void Player::heal(int score) {
-	this->score += score;
+	if(!invincible)
+		this->score += score;
 }
 
 void Player::move() {

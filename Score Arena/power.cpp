@@ -142,8 +142,8 @@ void Absorb::update(Player& player, Player& opponent) {
 		opponent.damage(ppf);
 
 		if (ppfTooSmall) {
-			player.score += remaining;
-			opponent.score -= remaining;
+			player.heal(remaining);
+			opponent.damage(remaining);
 			ppfTooSmall = false;
 		}
 
@@ -443,6 +443,13 @@ Freeze::Freeze() : Power() {
 
 void Freeze::start(Player& player, Player& opponent) {
 	Power::start(player, opponent);
+
+	//skip to end if player is invincible
+	if(opponent.isInvincible()) {
+		end(player, opponent);
+		return;
+	}
+
 	opponent.setCurSpeed(0);
 	opponent.setCurFillColor(Color::White);
 	opponent.setCurOutlineColor(Color(127, 127, 127));
@@ -457,6 +464,16 @@ void Freeze::end(Player& player, Player& opponent) {
 
 Shield::Shield() : Power() {
 	powerNo = 4;
+}
+
+void Shield::start(Player& player, Player& opponent) {
+	Power::start(player, opponent);
+	player.setInvincible(true);
+}
+
+void Shield::end(Player& player, Player& opponent) {
+	Power::end(player, opponent);
+	player.setInvincible(false);
 }
 
 Speed::Speed() : Power() {
