@@ -120,6 +120,17 @@ Menu::Menu(int width, int height) {
 	maps[5].setOrigin(bounds.left + bounds.width / 2.0f,
 		bounds.top + bounds.height / 2.0f);
 	maps[5].setDisabled(true);
+
+	//page 3
+	selector.sets[3].push_back("CANCEL", Vector2f(width * 2 / 5, height * 5 / 6));
+	selector.sets[3].push_back("APPLY", Vector2f(width * 3 / 5, height * 5 / 6));
+
+	bindingSets[0].setBindings(bindings1);
+	bindingSets[1].setBindings(bindings2);
+	bindingSets[0].setLocation(Vector2f(width * 3 / 10, height * 1 / 4),
+		Vector2f(width * 3 / 10, height * 5 / 6));
+	bindingSets[1].setLocation(Vector2f(width * 7 / 10, height * 1 / 4),
+		Vector2f(width * 7 / 10, height * 5 / 6));
 }
 
 void Menu::draw(RenderWindow& window) {
@@ -227,6 +238,21 @@ void Menu::draw(RenderWindow& window) {
 			for (int i = 0; i < 6; i++)
 				maps[i].draw(window, text);
 			break;
+		case 3:
+			FloatRect rect;
+			text.setPosition(Vector2f(width * 3 / 10, height / 6));
+			text.setString("Player 1");
+			rect = text.getLocalBounds();
+			text.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+			window.draw(text);
+			bindingSets[0].draw(window, text);
+
+			text.setPosition(Vector2f(width * 7 / 10, height / 6));
+			text.setString("Player 2");
+			rect = text.getLocalBounds();
+			text.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+			window.draw(text);
+			bindingSets[1].draw(window, text);
 		}
 
 		//draw options
@@ -335,6 +361,31 @@ void Menu::activateSelected() {
 		case 1:
 			clear(page);
 			page = 1;
+			break;
+		}
+	}
+	else if (page == 3) {
+		switch (selector.sets[page].getSelected()) {
+		case 1:
+			//cancel changes
+			bindingSets[0].clear();
+			bindingSets[0].setBindings(bindings1);
+			bindingSets[1].clear();
+			bindingSets[1].setBindings(bindings2);
+			clear(page);
+			page = 0;
+			break;
+		case 2:
+			//apply changes
+			for (int i = 0; i < 8; i++) {
+				bindings1[i] = bindingSets[0].bindings[i];
+				bindings2[i] = bindingSets[1].bindings[i];
+			}
+			bindingSets[0].clear();
+			bindingSets[1].clear();
+			clear(page);
+			page = 0;
+			break;
 		}
 	}
 }
@@ -398,6 +449,11 @@ void Menu::keyReleased(Event k) {
 	if (isActive()) {
 		if (k.key.code == Keyboard::Enter)
 			activateSelected();
+
+		if (page == 3) {
+			bindingSets[0].keyReleased(k.key.code);
+			bindingSets[1].keyReleased(k.key.code);
+		}
 	}
 }
 
@@ -428,7 +484,6 @@ void Menu::mouseMoved() {
 			colorSelect[1].requestSelect(pos);
 			powerSelect.requestSelect(pos);
 		}
-
 		//check if a map is selected
 		if (page == 2) {
 			for (int i = 0; i < 6; i++) {
@@ -441,6 +496,10 @@ void Menu::mouseMoved() {
 				if (i == 5)
 					selectedMap = 0;
 			}
+		}
+		if (page == 3) {
+			bindingSets[0].mouseMoved(pos);
+			bindingSets[1].mouseMoved(pos);
 		}
 	}
 }
@@ -468,6 +527,12 @@ void Menu::mouseReleased() {
 				setActive(false);
 				setStartGameQueue(true);
 			}
+		}
+		else if (page == 3) {
+			if(bindingSets[1].getSelected() == 0)
+				bindingSets[0].mouseReleased();
+			if(bindingSets[0].getSelected() == 0)
+				bindingSets[1].mouseReleased();
 		}
 	}
 }
@@ -537,4 +602,76 @@ Color Menu::getSkinOutlineColor(int slot) {
 	}
 
 	return c;
+}
+
+BindingSet::BindingSet() {
+	for (int i = 0; i < BINDING_NO; i++)
+		changed[i] = false;
+}
+
+void BindingSet::setBindings(Keyboard::Key bindings[8]) {
+	for (int i = 0; i < 8; i++) {
+		this->bindings[i] = bindings[i];
+		labels[i] = Menu::getBindingString(bindings[i]);
+	}
+}
+
+void BindingSet::setLocation(Vector2f start, Vector2f end) {
+	int distanceX = end.x - start.x, distanceY = end.y - start.y;
+
+	for (int i = 0; i < BINDING_NO; i++) {
+		locations[i] = Vector2f(start.x + i * distanceX / BINDING_NO,
+			start.y + i * distanceY / BINDING_NO);
+	}
+}
+
+void BindingSet::draw(RenderWindow& window, Text t) {
+	for (int i = 0; i < BINDING_NO; i++) {
+		t.setPosition(locations[i]);
+		t.setString((selected - 1 != i) ? labels[i] : "???");
+		if (i == hovered - 1 || i == selected - 1)
+			t.setFillColor(Color::Yellow);
+		else if (changed[i])
+			t.setFillColor(Color::Red);
+		else
+			t.setFillColor(Color::Green);
+		FloatRect rect = t.getLocalBounds();
+		t.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+		window.draw(t);
+	}
+}
+
+void BindingSet::mouseReleased() {
+	selected = hovered;
+}
+
+void BindingSet::mouseMoved(Vector2i pos) {
+	hovered = 0;
+	for (int i = 0; i < BINDING_NO; i++) {
+		int length = labels[i].length();
+		if (pos.x >= locations[i].x - length * 50 && pos.x <= locations[i].x + length * 50
+			&& pos.y >= locations[i].y - 25 && pos.y <= locations[i].y + 25)
+			hovered = i + 1;
+	}
+}
+
+void BindingSet::keyReleased(Keyboard::Key key) {
+	bool valid = true;
+	for (int i = 0; i < BINDING_NO; i++) {
+		if (bindings[i] == key)
+			valid = false;
+	}
+
+	if (selected > 0 && valid) {
+		bindings[selected - 1] = key;
+		labels[selected - 1] = Menu::getBindingString(key);
+		changed[selected - 1] = true;
+		selected = 0;
+	}
+}
+
+void BindingSet::clear() {
+	selected = 0;
+	for (int i = 0; i < BINDING_NO; i++)
+		changed[i] = false;
 }

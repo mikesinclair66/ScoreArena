@@ -11,6 +11,29 @@ using namespace std;
 using namespace sf;
 
 namespace MenuItems {
+	class BindingSet {
+		const static int BINDING_NO = 8;
+		string labels[BINDING_NO];
+		Vector2f locations[BINDING_NO];
+		bool changed[BINDING_NO];
+		int hovered = 0;
+		int selected = 0;
+
+	public:
+		Keyboard::Key bindings[BINDING_NO];
+
+		BindingSet();
+		void setBindings(Keyboard::Key bindings[8]);
+		Keyboard::Key* getBindings() { return bindings; }
+		void setLocation(Vector2f, Vector2f);
+		void draw(RenderWindow&, Text);
+		void mouseReleased();
+		void mouseMoved(Vector2i);
+		void keyReleased(Keyboard::Key);
+		void clear();
+		int getSelected() { return selected; }
+	};
+
 	class Menu {
 		bool active = false;
 		int width, height;
@@ -61,6 +84,8 @@ namespace MenuItems {
 			Keyboard::Left
 		};
 
+		BindingSet bindingSets[2];
+
 	public:
 		static const int CHAR_SIZE = 45;//the size of a character in a label
 		static Texture powerTextures[6];
@@ -110,6 +135,48 @@ namespace MenuItems {
 			string binding;
 
 			switch (key) {
+			case Keyboard::Up:
+				binding = "UP";
+				break;
+			case Keyboard::Right:
+				binding = "RIGHT";
+				break;
+			case Keyboard::Down:
+				binding = "DOWN";
+				break;
+			case Keyboard::Left:
+				binding = "LEFT";
+				break;
+			case Keyboard::Num0:
+				binding = "0";
+				break;
+			case Keyboard::Num1:
+				binding = "1";
+				break;
+			case Keyboard::Num2:
+				binding = "2";
+				break;
+			case Keyboard::Num3:
+				binding = "3";
+				break;
+			case Keyboard::Num4:
+				binding = "4";
+				break;
+			case Keyboard::Num5:
+				binding = "5";
+				break;
+			case Keyboard::Num6:
+				binding = "6";
+				break;
+			case Keyboard::Num7:
+				binding = "7";
+				break;
+			case Keyboard::Num8:
+				binding = "8";
+				break;
+			case Keyboard::Num9:
+				binding = "9";
+				break;
 			case Keyboard::Q:
 				binding = "Q";
 				break;
