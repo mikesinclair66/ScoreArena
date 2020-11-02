@@ -63,6 +63,12 @@ void Map::draw(RenderWindow& window) {
 			if (finishAnimation.queueExit) {
 				//exit to menu
 				finishAnimation.queueExit = false;
+				players[0].score = players[0].SCORE_DEFAULT;
+				players[1].score = players[1].SCORE_DEFAULT;
+				players[0].setPosition(Vector2f(width / 4 - players[0].getRadius() / 2,
+					height / 2 - players[0].getRadius() / 2));
+				players[1].setPosition(Vector2f(width * 3 / 4 - players[1].getRadius() / 2,
+					height / 2 - players[1].getRadius() / 2));
 				setActive(false);
 				queueExit = true;
 			}

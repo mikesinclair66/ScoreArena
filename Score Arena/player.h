@@ -10,7 +10,6 @@ namespace Game {
 		bool isCpu = false;
 		static const int BINDING_LENGTH = 8;
 		Keyboard::Key bindings[BINDING_LENGTH];//attack menu, attack 1-3, up-left
-		const int SCORE_DEFAULT = 30;
 		std::string name;
 
 		//movement records
@@ -27,6 +26,7 @@ namespace Game {
 		bool invincible = false;
 
 	public:
+		const int SCORE_DEFAULT = 30;
 		int score = SCORE_DEFAULT;
 		AttackArsenal arsenal;
 		Color skinColor, skinOutlineColor;
