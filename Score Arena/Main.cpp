@@ -27,6 +27,7 @@ int main()
             //get map texture and required stats to start game
             switch (menu.getSelectedMap()) {
             case 1:
+                map = new Map(vm.width, vm.height);
                 break;
             case 2:
                 map = new Map2(vm.width, vm.height);

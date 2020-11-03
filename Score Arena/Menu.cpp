@@ -203,12 +203,23 @@ void Menu::draw(RenderWindow& window) {
 			sprite.setTexture(powerTextures[powerSelect.slot]);
 			sprite.setPosition(Vector2f(powerSelect.getPosition().x - 85,
 				powerSelect.getPosition().y - 85));
-			/*
-			FloatRect spriteRect = sprite.getLocalBounds();
-			sprite.setOrigin(spriteRect.left + spriteRect.width / 2.0f,
-				spriteRect.top + spriteRect.height / 2.0f);
-			*/
 			window.draw(sprite);
+
+			//draw player colors in absorb icon
+			if (powerSelect.slot == 1) {
+				RectangleShape pColor;
+				pColor.setFillColor(getPlayerColor(0));
+				pColor.setPosition(Vector2f(powerSelect.getPosition().x + 42,
+					powerSelect.getPosition().y - 70));
+				pColor.setSize(Vector2f(37, 37));
+				window.draw(pColor);
+
+				pColor.setFillColor(getPlayerColor(1));
+				pColor.setPosition(Vector2f(powerSelect.getPosition().x - 72,
+					powerSelect.getPosition().y + 5));
+				pColor.setSize(Vector2f(67, 66));
+				window.draw(pColor);
+			}
 
 			//powers in arsenal slots
 			for (int i = 0; i < 3; i++) {
@@ -218,6 +229,20 @@ void Menu::draw(RenderWindow& window) {
 					sprite.setTexture(powerTextures[slot - 1]);
 					sprite.setPosition(Vector2f(cPos.x - 85, cPos.y - 85));
 					window.draw(sprite);
+
+					//draw player colors in absorb icon
+					if (slot == 2) {
+						RectangleShape pColor;
+						pColor.setFillColor(getPlayerColor(0));
+						pColor.setPosition(Vector2f(cPos.x + 42, cPos.y - 70));
+						pColor.setSize(Vector2f(37, 37));
+						window.draw(pColor);
+
+						pColor.setFillColor(getPlayerColor(1));
+						pColor.setPosition(Vector2f(cPos.x - 72, cPos.y + 5));
+						pColor.setSize(Vector2f(67, 66));
+						window.draw(pColor);
+					}
 				}
 			}
 			if (!singlePlayer) {

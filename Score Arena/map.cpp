@@ -39,7 +39,9 @@ Map::Map(int width, int height) {
 }
 
 Map2::Map2(int width, int height) : Map(width, height) {
-
+	ground.setPosition(Vector2f(width / 10, height / 10));
+	ground.setSize(Vector2f(width * 4 / 5, height * 4 / 5));
+	ground.setFillColor(Color(123, 40, 10));
 }
 
 Map3::Map3(int width, int height) : Map(width, height) {
@@ -58,6 +60,8 @@ void Map::draw(RenderWindow& window) {
 			}
 		}
 
+		drawMisc(window);
+
 		for (int i = 0; i < POINTS; i++)
 			points[i].draw(window);
 
@@ -65,6 +69,8 @@ void Map::draw(RenderWindow& window) {
 		int curFrame = clock.getElapsedTime().asMilliseconds() / 20;
 		if (curFrame != frameCount) {
 			finish(Vector2f(width, height));
+
+			updateMisc();
 
 			if (finishAnimation.isActive())
 				finishAnimation.update();
@@ -146,6 +152,42 @@ void Map::draw(RenderWindow& window) {
 		if (finishAnimation.isActive())
 			finishAnimation.draw(window, text);
 	}
+}
+
+void Map::drawMisc(RenderWindow&){ /*Method overriden by other maps*/ }
+
+void Map::updateMisc(){ /*Method overriden by other maps*/ }
+
+void Map2::drawMisc(RenderWindow& window) {
+	window.draw(ground);
+}
+
+void Map2::updateMisc() {
+	Vector2f pos1 = players[0].getPosition(), pos2 = players[1].getPosition();
+	Vector2f groundPos = ground.getPosition(), groundSize = ground.getSize();
+	int pSize = players[0].getRadius() * 2;
+
+	if (pos1.x < groundPos.x || pos1.x > groundPos.x + groundSize.x - pSize
+		|| pos1.y < groundPos.y || pos1.y > groundPos.y + groundSize.y - pSize)
+		players[0].damage(1);
+
+	if (pos2.x < groundPos.x || pos2.x > groundPos.x + groundSize.x - pSize
+		|| pos2.y < groundPos.y || pos2.y > groundPos.y + groundSize.y - pSize)
+		players[1].damage(1);
+}
+
+/// <summary>
+/// Map 2's randomizeLocation method makes the points locate within
+/// the ground rectangle.
+/// </summary>
+void Map2::randomizeLocation(int i) {
+	Vector2f pos, groundPos = ground.getPosition();
+	Vector2f groundSize = ground.getSize();
+	do {
+		Map::randomizeLocation(i);
+		pos = points[i].getPosition();
+	} while (pos.x < groundPos.x || pos.x > groundPos.x + groundSize.x - pointSize
+		|| pos.y < groundPos.y || pos.y > groundPos.y + groundSize.y - pointSize);
 }
 
 void Map::loadTexture(Texture t) {

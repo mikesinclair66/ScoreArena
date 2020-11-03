@@ -36,11 +36,13 @@ namespace Game {
 		Font font;
 		Text text;
 		const static int POINTS = 100;//number of points on the map at a time
-		int pointSize;
 		const int POINT_SIZE_MOD = 75;
-		Point points[POINTS];
 		Power *powers1[3], *powers2[3];
 		FinishAnimation finishAnimation;
+
+	protected:
+		Point points[POINTS];
+		int pointSize;
 
 	public:
 		bool queueExit = false;
@@ -51,12 +53,14 @@ namespace Game {
 
 		Map(int, int);
 		void draw(RenderWindow&);
+		virtual void drawMisc(RenderWindow&);
+		virtual void updateMisc();
 		void loadTexture(Texture);
 		void loadMenuStats(MenuItems::Menu&);
 		void initPoints();
 		void initPowers();
 		//randomizes location of specified point
-		void randomizeLocation(int);
+		virtual void randomizeLocation(int);
 		void requestPointCollision(Player&);
 		void finish(Vector2f);
 		void setActive(bool active) { this->active = active; }
@@ -65,9 +69,13 @@ namespace Game {
 	};
 
 	class Map2 : public Map {
-		
+		RectangleShape ground;
+
 	public:
 		Map2(int, int);
+		void drawMisc(RenderWindow&) override;
+		void updateMisc() override;
+		void randomizeLocation(int) override;
 	};
 
 	class Map3 : public Map {
