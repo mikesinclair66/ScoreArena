@@ -38,6 +38,14 @@ Map::Map(int width, int height) {
 	text.setStyle(Text::Bold);
 }
 
+Map2::Map2(int width, int height) : Map(width, height) {
+
+}
+
+Map3::Map3(int width, int height) : Map(width, height) {
+
+}
+
 void Map::draw(RenderWindow& window) {
 	if (isActive()) {
 		//draw bg

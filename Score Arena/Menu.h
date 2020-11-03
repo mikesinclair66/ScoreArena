@@ -60,7 +60,6 @@ namespace MenuItems {
 
 		//map select page
 		MapIcon maps[6];
-		int selectedMap;
 
 		//key bindings page
 		Keyboard::Key bindings1[8] = {
@@ -87,6 +86,7 @@ namespace MenuItems {
 		BindingSet bindingSets[2];
 
 	public:
+		int selectedMap;
 		static const int CHAR_SIZE = 45;//the size of a character in a label
 		static Texture powerTextures[6];
 		static int powerPrices[6];

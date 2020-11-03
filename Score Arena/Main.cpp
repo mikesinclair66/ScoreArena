@@ -17,7 +17,7 @@ int main()
     Menu menu(vm.width, vm.height);
     menu.setActive(true, window);
 
-    Map map(vm.width, vm.height);
+    Map* map = new Map(vm.width, vm.height);
 
     while (window.isOpen())
     {
@@ -27,41 +27,32 @@ int main()
             //get map texture and required stats to start game
             switch (menu.getSelectedMap()) {
             case 1:
-                //map = map1();
                 break;
             case 2:
-
+                map = new Map2(vm.width, vm.height);
                 break;
             case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-
+                map = new Map3(vm.width, vm.height);
                 break;
             default:
                 throw runtime_error("Selected map variable not recorded.");
                 break;
             }
-            map.loadMenuStats(menu);
-            map.initPoints();
-            map.setActive(true);
+            map->loadMenuStats(menu);
+            map->initPoints();
+            map->setActive(true);
 
             //return game queue to false since it now has been activated
             menu.setStartGameQueue(false);
         }
-        if (map.queueExit) {
-            map.queueExit = false;
+        if (map->queueExit) {
+            map->queueExit = false;
             menu.setActive(true, window);
             for (int i = 0; i < 2; i++) {
                 menu.select(1);
                 menu.activateSelected();
             }
+            menu.selectedMap = 0;
         }
 
         Event event;
@@ -76,17 +67,17 @@ int main()
                         window.close();
                     else {
                         menu.keyPressed();
-                        if (map.isActive()) {
-                            map.players[0].keyPressed(map.clock);
-                            map.players[1].keyPressed(map.clock);
+                        if (map->isActive()) {
+                            map->players[0].keyPressed(map->clock);
+                            map->players[1].keyPressed(map->clock);
                         }
                     }
                     break;
                 case Event::KeyReleased:
                     menu.keyReleased(event);
-                    if (map.isActive()) {
-                        map.players[0].keyReleased(event, map.clock);
-                        map.players[1].keyReleased(event, map.clock);
+                    if (map->isActive()) {
+                        map->players[0].keyReleased(event, map->clock);
+                        map->players[1].keyReleased(event, map->clock);
                     }
                     break;
                 case Event::MouseMoved:
@@ -100,7 +91,7 @@ int main()
 
         window.clear();
         menu.draw(window);
-        map.draw(window);
+        map->draw(window);
         window.display();
     }
 

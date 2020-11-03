@@ -63,4 +63,16 @@ namespace Game {
 		bool isActive() { return active; }
 		Color getSkinColor(int slot);
 	};
+
+	class Map2 : public Map {
+		
+	public:
+		Map2(int, int);
+	};
+
+	class Map3 : public Map {
+
+	public:
+		Map3(int, int);
+	};
 }
