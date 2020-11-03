@@ -253,6 +253,9 @@ void Menu::draw(RenderWindow& window) {
 			text.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 			window.draw(text);
 			bindingSets[1].draw(window, text);
+
+			rect = text.getLocalBounds();
+			text.setOrigin(rect.left, rect.top);
 		}
 
 		//draw options
