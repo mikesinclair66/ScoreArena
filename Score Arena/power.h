@@ -52,8 +52,10 @@ namespace Game {
 		int ppf;
 		bool ppfTooSmall = false;
 		int remaining;
+		CircleShape ring;
+		RectangleShape line;
 
-		RectangleShape ring;
+		void findRotation(Shape&, int, int);
 
 	public:
 		Absorb();
@@ -104,10 +106,14 @@ namespace Game {
 	};
 
 	class Shield : public Power {
+		CircleShape shield;
+
 	public:
 		Shield();
 		void start(Player& player, Player& opponent) override;
+		void update(Player& player, Player& opponent) override;
 		void end(Player& player, Player& opponent) override;
+		void draw(RenderWindow&, Player& player, Player& opponent) override;
 	};
 
 	class Speed : public Power {

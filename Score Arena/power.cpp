@@ -1,4 +1,5 @@
 #include "power.h"
+#include "map.h"
 
 using namespace Game;
 
@@ -83,8 +84,8 @@ void Attack::start(Player& player, Player& opponent) {
 void Attack::update(Player& player, Player& opponent) {
 	Power::update(player, opponent);
 	Vector2f pos = player.getPosition(), opos = opponent.getPosition();
-	if (!attackLanded && pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
-		&& pos.y >= opos.y - player.getRadius() && pos.y <= opos.y + player.getRadius())
+	if (!attackLanded && pos.x >= opos.x - player.getRadius() * 2 && pos.x <= opos.x + player.getRadius() * 2
+		&& pos.y >= opos.y - player.getRadius() * 2 && pos.y <= opos.y + player.getRadius() * 2)
 		landAttack();
 
 	if (queueDamage) {
@@ -102,9 +103,19 @@ Absorb::Absorb() : Power() {
 	setDrawable(true);
 	powerNo = 1;
 
-	ring.setOutlineColor(Color::Green);
+	Color green = Color(0, 255, 0, 127);
+	ring.setOutlineColor(green);
 	ring.setOutlineThickness(10);
 	ring.setFillColor(Color::Transparent);
+
+	line.setFillColor(green);
+}
+
+void Absorb::findRotation(Shape& shape, int distanceX, int distanceY) {
+	float sinTheta = (float) distanceY / sqrt(pow(distanceX, 2) + pow(distanceY, 2));
+	float cosTheta = (float) distanceX / sqrt(pow(distanceX, 2) + pow(distanceY, 2));
+	float theta = atan(sinTheta / cosTheta);
+	shape.setRotation((float)(theta * (float) 180 / 3.14f));
 }
 
 void Absorb::landAttack() {
@@ -121,20 +132,40 @@ void Absorb::landAttack() {
 }
 
 void Absorb::draw(RenderWindow& window, Player& player, Player& opponent) {
-	if (toggled && attackLanded) {
+	if (toggled) {
+		window.draw(line);
 		window.draw(ring);
 	}
 }
 
 void Absorb::start(Player& player, Player& opponent) {
 	Power::start(player, opponent);
+	Vector2f pos = player.getPosition(), opos = opponent.getPosition();
+	int radius = player.getRadius();
+	line.setPosition(Vector2f(pos.x + radius, pos.y + radius - 5));
+	int distanceX = opos.x - pos.x, distanceY = opos.y - pos.y;
+	line.setSize(Vector2f(max(distanceX, distanceY), 10));
+	ring.setRadius(player.getRadius() * 1.5f);
+	ring.setPosition(Vector2f(pos.x - 0.35f * ring.getRadius(), pos.y - 0.35f * ring.getRadius()));
+	findRotation(line, distanceX, distanceY);
 }
 
 void Absorb::update(Player& player, Player& opponent) {
 	Power::update(player, opponent);
 	Vector2f pos = player.getPosition(), opos = opponent.getPosition();
-	if (!attackLanded && pos.x >= opos.x - player.getRadius() && pos.x <= opos.x + player.getRadius()
-		&& pos.y >= opos.y - player.getRadius() && pos.y <= opos.y + player.getRadius())
+	int radius = player.getRadius();
+	
+	int distanceX = opos.x - pos.x, distanceY = opos.y - pos.y;
+	line.setPosition(Vector2f(pos.x + radius, pos.y + radius - 5));
+	//swap direction if player x > and y < of opponent
+	bool negative = distanceX < 0 && distanceY >= 0;
+	line.setSize(Vector2f(((!negative) ? max(distanceX, distanceY) : -max(distanceX, distanceY)), 10));
+	findRotation(line, distanceX, distanceY);
+
+	ring.setPosition(Vector2f(pos.x - 0.35f * ring.getRadius(), pos.y - 0.35f * ring.getRadius()));
+
+	if (!attackLanded && pos.x >= opos.x - player.getRadius() * 2 && pos.x <= opos.x + player.getRadius() * 2
+		&& pos.y >= opos.y - player.getRadius() * 2 && pos.y <= opos.y + player.getRadius() * 2)
 		landAttack();
 
 	if (attackLanded) {
@@ -147,17 +178,18 @@ void Absorb::update(Player& player, Player& opponent) {
 			ppfTooSmall = false;
 		}
 
-		int radius = player.getRadius();
-		Vector2f pos = player.getPosition(), opos = opponent.getPosition();
-		pos.x += radius;
-		pos.y += radius;
-		ring.setPosition(pos);
-		ring.setSize(Vector2f(opos.x + radius - pos.x, opos.y + radius - pos.y));
+		float radiusMod = 0.6f;
+		radiusMod *= (opos.y - pos.y < 0) ? -1 : 1;
+		ring.setPosition(Vector2f(pos.x - ring.getRadius() * radiusMod, pos.y - ring.getRadius() * radiusMod));
+		ring.setScale(Vector2f((float)(((!negative) ? max(distanceX, distanceY) : -max(distanceX, distanceY)) / ring.getRadius()), 1));
+		findRotation(ring, distanceX, distanceY);
 	}
 }
 
 void Absorb::end(Player& player, Player& opponent) {
 	Power::end(player, opponent);
+	ring.setRotation(0);
+	ring.setScale(Vector2f(1, 1));
 }
 
 Fire::Fire() : Power() {
@@ -444,11 +476,14 @@ Freeze::Freeze() : Power() {
 void Freeze::start(Player& player, Player& opponent) {
 	Power::start(player, opponent);
 
-	//skip to end if player is invincible
-	if(opponent.isInvincible()) {
+	//skip to end if opponent is ALREADY invincible
+	if (opponent.isInvincible()) {
 		end(player, opponent);
 		return;
 	}
+	//otherwise make the opponent invincible so they don't take damage while frozen
+	else
+		opponent.setInvincible(true);
 
 	opponent.setCurSpeed(0);
 	opponent.setCurFillColor(Color::White);
@@ -460,20 +495,44 @@ void Freeze::end(Player& player, Player& opponent) {
 	opponent.restoreCurSpeed();
 	opponent.setCurFillColor(opponent.skinColor);
 	opponent.setCurOutlineColor(opponent.skinOutlineColor);
+	opponent.setInvincible(false);
 }
 
 Shield::Shield() : Power() {
 	powerNo = 4;
+	srand(time(NULL));
+	setDrawable(true);
 }
 
 void Shield::start(Player& player, Player& opponent) {
 	Power::start(player, opponent);
 	player.setInvincible(true);
+	shield.setRadius(player.getRadius() * 1.5f);
+	Vector2f pos = player.getPosition();
+	int radius = shield.getRadius();
+	shield.setPosition(Vector2f(pos.x - 0.35f * radius, pos.y - 0.35f * radius));
+}
+
+void Shield::update(Player& player, Player& opponent) {
+	Power::update(player, opponent);
+	Color c = Map::getSkinColor(rand() % 7);
+	Color shieldColor = Color(c.r, c.g, c.b, 127);
+	shield.setFillColor(shieldColor);
+	shield.setOutlineColor(shieldColor);
+	Vector2f pos = player.getPosition();
+	int radius = shield.getRadius();
+	shield.setPosition(Vector2f(pos.x - 0.35f * radius, pos.y - 0.35f * radius));
 }
 
 void Shield::end(Player& player, Player& opponent) {
 	Power::end(player, opponent);
 	player.setInvincible(false);
+}
+
+void Shield::draw(RenderWindow& window, Player& player, Player& opponent) {
+	if (toggled) {
+		window.draw(shield);
+	}
 }
 
 Speed::Speed() : Power() {

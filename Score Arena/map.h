@@ -65,7 +65,7 @@ namespace Game {
 		void finish(Vector2f);
 		void setActive(bool active) { this->active = active; }
 		bool isActive() { return active; }
-		Color getSkinColor(int slot);
+		static Color getSkinColor(int slot);
 	};
 
 	class Map2 : public Map {
