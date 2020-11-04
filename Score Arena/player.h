@@ -23,7 +23,7 @@ namespace Game {
 		//power variables
 		Sprite sprite;
 		int powerQueue = 0;//queue can be used for powers 1-3; 0 means no power queued
-		bool invincible = false;
+		bool invincible = false, invisible = false;
 
 	public:
 		const int SCORE_DEFAULT = 30;
@@ -57,7 +57,9 @@ namespace Game {
 		void setMapSize(Vector2f mapSize) { this->mapSize = mapSize; }
 		void setName(std::string name) { this->name = name; }
 		void setInvincible(bool invincible) { this->invincible = invincible; }
+		void setInvisible(bool invisible) { this->invisible = invisible; }
 		bool isInvincible() { return invincible; }
+		bool isInvisible() { return invisible; }
 		Vector2f getMapSize() { return mapSize; }
 		std::string getName() { return name; }
 		int getCurSpeed() { return curSpeed; }

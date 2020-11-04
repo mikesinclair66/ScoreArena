@@ -1,4 +1,6 @@
 #pragma once
+#include <stdlib.h>
+#include <time.h>
 #include <SFML/Graphics.hpp>
 #include "menu.h"
 #include "player.h"
@@ -61,7 +63,7 @@ namespace Game {
 		void initPowers();
 		//randomizes location of specified point
 		virtual void randomizeLocation(int);
-		void requestPointCollision(Player&);
+		virtual void requestPointCollision(Player&);
 		void finish(Vector2f);
 		void setActive(bool active) { this->active = active; }
 		bool isActive() { return active; }
@@ -78,9 +80,48 @@ namespace Game {
 		void randomizeLocation(int) override;
 	};
 
+	/// <summary>
+	/// Teleporter is used in map3 to teleport a selected player
+	/// to a random location in the map.
+	/// </summary>
+	class Teleporter {
+		bool active = false;
+		bool posInit = false;//if the position has been set
+		bool teleporting = false;
+		int wait;//counter while the player is teleporting
+		RectangleShape r1, r2, r3;
+		Vector2f pos;
+		const Color COLORS[3] = {
+			Color::Red,
+			Color::Green,
+			Color::Magenta
+		};
+		int drawPriority = 0;
+		int maxLength;
+
+	public:
+		Teleporter();
+		void setSize(int);
+		void setActive(bool active) { this->active = active; }
+		bool isActive() { return active; }
+		Vector2f getPos() { return pos; }
+		int getLength() { return maxLength; }
+		void draw(RenderWindow&);
+		void start();
+		void update(Player&);
+		void teleport(Player&);
+		void endTeleport(Player&);
+		void end();
+	};
+
 	class Map3 : public Map {
+		Teleporter t;
+		int teleporterCounter = 0;
 
 	public:
 		Map3(int, int);
+		void drawMisc(RenderWindow&) override;
+		void updateMisc() override;
+		void requestPointCollision(Player&) override;
 	};
 }

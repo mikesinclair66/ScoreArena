@@ -9,6 +9,9 @@ Player::Player() {
 }
 
 void Player::draw(RenderWindow& window, Text t) {
+	if (invisible)
+		return;
+
 	window.draw(*this);
 
 	//display score

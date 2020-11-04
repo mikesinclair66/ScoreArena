@@ -44,8 +44,15 @@ Map2::Map2(int width, int height) : Map(width, height) {
 	ground.setFillColor(Color(123, 40, 10));
 }
 
-Map3::Map3(int width, int height) : Map(width, height) {
+Teleporter::Teleporter() {
+	srand(time(NULL));
+	r1.setFillColor(COLORS[0]);
+	r2.setFillColor(COLORS[1]);
+	r3.setFillColor(COLORS[2]);
+}
 
+Map3::Map3(int width, int height) : Map(width, height) {
+	t.setSize(sqrt(pow(width, 2) + pow(height, 2)) / 20);//segments the resolution
 }
 
 void Map::draw(RenderWindow& window) {
@@ -188,6 +195,148 @@ void Map2::randomizeLocation(int i) {
 		pos = points[i].getPosition();
 	} while (pos.x < groundPos.x || pos.x > groundPos.x + groundSize.x - pointSize
 		|| pos.y < groundPos.y || pos.y > groundPos.y + groundSize.y - pointSize);
+}
+
+void Teleporter::setSize(int length) {
+	maxLength = length;
+	r1.setSize(Vector2f(length, length));
+	r2.setSize(Vector2f(length / 2, length / 2));
+	r3.setSize(Vector2f(length / 3, length / 3));
+}
+
+void Teleporter::draw(RenderWindow& window) {
+	if (isActive()) {
+		switch (drawPriority) {
+		case 0:
+			window.draw(r1);
+			window.draw(r2);
+			window.draw(r3);
+			break;
+		case 1:
+			window.draw(r2);
+			window.draw(r3);
+			window.draw(r1);
+			break;
+		case 2:
+			window.draw(r3);
+			window.draw(r1);
+			window.draw(r2);
+			break;
+		default:
+			throw runtime_error("Int drawPriority has an invalid value.");
+			break;
+		}
+	}
+}
+
+void Teleporter::start() {
+	setActive(true);
+}
+
+void Teleporter::update(Player& player) {
+	if (isActive()) {
+		if (!posInit) {
+			Vector2f mapSize = player.getMapSize();
+			pos.x = rand() % (int) mapSize.x - maxLength;
+			pos.y = rand() % (int) mapSize.y - maxLength;
+
+			posInit = true;
+		}
+
+		auto increaseSize = [](RectangleShape& r, int maxLength) {
+			Vector2f size = r.getSize();
+			size.x++;
+			size.y++;
+
+			if (size.x > maxLength) {
+				size.x = 1;
+				size.y = 1;
+			}
+
+			r.setSize(size);
+		};
+
+		increaseSize(r1, maxLength);
+		increaseSize(r2, maxLength);
+		increaseSize(r3, maxLength);
+
+		if (r1.getSize().x == 1 || r2.getSize().x == 1 || r3.getSize().x == 1)
+			drawPriority++;
+
+		if (drawPriority > 2)
+			drawPriority = 0;
+
+		auto setPos = [](RectangleShape& r, Vector2f pos, int maxLength) {
+			r.setPosition(Vector2f(pos.x + maxLength / 2 - r.getSize().x / 2,
+				pos.y + maxLength / 2 - r.getSize().y / 2));
+		};
+
+		setPos(r1, pos, maxLength);
+		setPos(r2, pos, maxLength);
+		setPos(r3, pos, maxLength);
+	}
+
+	if (teleporting) {
+		wait++;
+
+		if (wait >= 150) 
+			endTeleport(player);
+	}
+}
+
+void Teleporter::teleport(Player& player) {
+	teleporting = true;
+	wait = 0;
+	player.setInvisible(true);
+	player.setInvincible(true);
+	player.setCurSpeed(0);
+
+	Vector2f mapSize = player.getMapSize();
+	int x = rand() % (int)mapSize.x - maxLength;
+	int y = rand() % (int)mapSize.y - maxLength;
+
+	player.setPosition(Vector2f(x, y));
+}
+
+void Teleporter::endTeleport(Player& player) {
+	teleporting = false;
+	player.setInvisible(false);
+	player.setInvincible(false);
+	player.setCurSpeed(player.getSpeed());
+}
+
+void Teleporter::end() {
+	setActive(false);
+	posInit = false;
+}
+
+void Map3::drawMisc(RenderWindow& window) {
+	t.draw(window);
+}
+
+void Map3::updateMisc() {
+	teleporterCounter++;
+
+	if (teleporterCounter >= 100 && !t.isActive())
+		t.start();
+	if (teleporterCounter >= 400) {
+		t.end();
+		teleporterCounter = -200;
+	}
+}
+
+void Map3::requestPointCollision(Player& player) {
+	Map::requestPointCollision(player);
+	t.update(player);
+
+	Vector2f pos = player.getPosition(), tpos = t.getPos();
+	int pSize = player.getRadius() * 2, tSize = t.getLength();
+	if (t.isActive() && pos.x >= tpos.x - pSize && pos.x <= tpos.x + tSize
+		&& pos.y >= tpos.y - pSize && pos.y <= tpos.y + tSize) {
+		t.teleport(player);
+		t.end();
+		teleporterCounter = -200;
+	}
 }
 
 void Map::loadTexture(Texture t) {
