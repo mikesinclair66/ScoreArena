@@ -71,7 +71,6 @@ namespace Game {
 		Sprite sprite;
 		CircleShape innerRing, outerRing;
 		RectangleShape lineHoriz, lineVert;
-		Vector2f aimPos;
 		const static int BULLET_NO = 3, SPEED = 25;
 		int bulletNo;
 		Vector2f bullets[BULLET_NO];
@@ -89,6 +88,8 @@ namespace Game {
 		void initExplosion(int);
 
 	public:
+		Vector2f aimPos;
+
 		Fire();
 		void landAttack() override;
 		void start(Player& player, Player& opponent) override;

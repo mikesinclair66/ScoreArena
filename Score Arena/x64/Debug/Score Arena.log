@@ -1,4 +1,6 @@
-﻿  map.cpp
+﻿  Main.cpp
+C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  map.cpp
 C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(12,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(18,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
@@ -76,68 +78,160 @@ C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(78,20): warning C4244
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(214,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(258,30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(241,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(285,30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(258,22): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(285,22): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(259,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(286,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(259,29): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(286,29): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(260,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(287,41): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(260,29): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(287,29): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(296,37): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(323,37): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(297,37): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(324,37): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(354,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(381,33): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(354,30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(381,30): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(391,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(433,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(493,11): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(418,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(460,13): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(523,11): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(492,34): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(522,34): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(514,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\map.cpp(544,11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  power.cpp
+C:\Users\user\source\repos\Score Arena\Score Arena\selector.h(27,27): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(115,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(116,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(123,51): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(144,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(146,16): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(146,44): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(147,27): warning C4244: 'argument': conversion from 'const _Ty' to 'T', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(156,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(158,16): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(158,44): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(162,26): warning C4244: 'argument': conversion from '_Ty' to 'T', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(232,33): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(241,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(243,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(244,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(247,29): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(248,32): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(280,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(323,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(396,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(416,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(417,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(419,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(424,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(431,16): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(431,48): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(503,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(512,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(523,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(541,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(558,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(563,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(585,32): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(588,22): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(597,12): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(598,63): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\user\source\repos\Score Arena\Score Arena\power.cpp(598,48): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Generating Code...
   Score Arena.vcxproj -> C:\Users\user\source\repos\Score Arena\x64\Debug\Score Arena.exe

@@ -169,38 +169,65 @@ void Map::updateMisc(){
 		if (frameCount % 50 == 0) {
 			players[1].restoreMovementQueues();
 
-			//move in either a simultaneous direction or just the first direction
-			int firstDir = rand() % 4;
-			int secondDir = rand() % 3;
-			if (firstDir == 0) {
-				players[1].upR = false;
-				if (secondDir == 1)
-					players[1].rightR = false;
-				else if (secondDir == 2)
-					players[1].leftR = false;
-			}
-			else if (firstDir == 1) {
-				players[1].rightR = false;
-				if (secondDir == 1)
+			if (players[1].getNeutral()) {
+				//move in either a simultaneous direction or just the first direction
+				int firstDir = rand() % 4;
+				int secondDir = rand() % 3;
+				if (firstDir == 0) {
 					players[1].upR = false;
-				else if (secondDir == 2)
-					players[1].downR = false;
-			}
-			else if (firstDir == 2) {
-				players[1].downR = false;
-				if (secondDir == 1)
+					if (secondDir == 1)
+						players[1].rightR = false;
+					else if (secondDir == 2)
+						players[1].leftR = false;
+				}
+				else if (firstDir == 1) {
 					players[1].rightR = false;
-				else if (secondDir == 2)
+					if (secondDir == 1)
+						players[1].upR = false;
+					else if (secondDir == 2)
+						players[1].downR = false;
+				}
+				else if (firstDir == 2) {
+					players[1].downR = false;
+					if (secondDir == 1)
+						players[1].rightR = false;
+					else if (secondDir == 2)
+						players[1].leftR = false;
+				}
+				else {
 					players[1].leftR = false;
+					if (secondDir == 1)
+						players[1].upR = false;
+					else if (secondDir == 2)
+						players[1].downR = false;
+				}
 			}
 			else {
-				players[1].leftR = false;
-				if (secondDir == 1)
-					players[1].upR = false;
-				else if (secondDir == 2)
+				//chase the player
+				Vector2f pos = players[0].getPosition(), cpuPos = players[1].getPosition();
+
+				if (cpuPos.x < pos.x)
+					players[1].rightR = false;
+				else
+					players[1].leftR = false;
+
+				if (cpuPos.y < pos.y)
 					players[1].downR = false;
+				else
+					players[1].upR = false;
 			}
 		}
+
+		if (frameCount % 150 == 0 && !powers2[0]->isActive() && !powers2[1]->isActive() && !powers2[2]->isActive()) {
+			//initiate a power
+			int slot = rand() % 3;
+			players[1].setPowerQueue(slot);
+			//change player from neutral unless power is neutral
+			if(powers2[slot]->getPowerNo() < 3)
+				players[1].setNeutral(false);
+		}
+		else if (players[1].getPowerQueue() == 0 && !powers2[0]->isActive() && !powers2[1]->isActive() && !powers2[2]->isActive())
+			players[1].setNeutral(true);
 	}
 }
 
@@ -482,6 +509,9 @@ void Map::initPowers() {
 			throw std::runtime_error("Power was not properly stored.");
 			break;
 		}
+
+		if (players[1].getCpu() && slot == 2)
+			powers2[i] = new Attack();
 	}
 }
 

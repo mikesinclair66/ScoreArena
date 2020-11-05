@@ -7,7 +7,6 @@ using namespace sf;
 
 namespace Game {
 	class Player : public CircleShape {
-		bool isCpu = false;
 		static const int BINDING_LENGTH = 8;
 		Keyboard::Key bindings[BINDING_LENGTH];//attack menu, attack 1-3, up-left
 		std::string name;
@@ -23,6 +22,10 @@ namespace Game {
 		Sprite sprite;
 		int powerQueue = 0;//queue can be used for powers 1-3; 0 means no power queued
 		bool invincible = false, invisible = false;
+
+		//cpu variables
+		bool isCpu = false;
+		bool neutral = true;
 
 	public:
 		bool upR = true, rightR = true, downR = true, leftR = true;
@@ -44,6 +47,7 @@ namespace Game {
 			leftR = true;
 		}
 		void setCpu(bool isCpu) { this->isCpu = isCpu; }
+		void setNeutral(bool neutral) { this->neutral = neutral; }
 		void setFillColor(Color c) {
 			CircleShape::setFillColor(c);
 			skinColor = c;
@@ -83,6 +87,7 @@ namespace Game {
 				return !leftR;
 		}
 		bool getCpu() { return isCpu; }
+		bool getNeutral() { return neutral; }
 		void keyPressed(Clock);
 		void keyReleased(Event, Clock);
 	};
