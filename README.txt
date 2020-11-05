@@ -1,4 +1,4 @@
-Created and owned by Michael Kevin Sinclair
+Created and owned by Michael K. Sinclair
 Published on November 4, 2020
 
 Score Arena is a single/multi player score-based game where the player seeks to eliminate the opponent's
