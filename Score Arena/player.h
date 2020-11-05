@@ -13,7 +13,6 @@ namespace Game {
 		std::string name;
 
 		//movement records
-		bool upR = true, rightR = true, downR = true, leftR = true;
 		float upTime, rightTime, downTime, leftTime;
 		Vector2f startPos;
 		const int SPEED = 8;
@@ -26,6 +25,7 @@ namespace Game {
 		bool invincible = false, invisible = false;
 
 	public:
+		bool upR = true, rightR = true, downR = true, leftR = true;
 		const int SCORE_DEFAULT = 30;
 		int score = SCORE_DEFAULT;
 		AttackArsenal arsenal;
@@ -37,6 +37,12 @@ namespace Game {
 		void heal(int);
 		void move();
 		void restoreCurSpeed() { curSpeed = SPEED; }
+		void restoreMovementQueues() {
+			upR = true;
+			rightR = true;
+			downR = true;
+			leftR = true;
+		}
 		void setCpu(bool isCpu) { this->isCpu = isCpu; }
 		void setFillColor(Color c) {
 			CircleShape::setFillColor(c);

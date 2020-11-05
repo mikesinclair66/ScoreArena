@@ -163,7 +163,46 @@ void Map::draw(RenderWindow& window) {
 
 void Map::drawMisc(RenderWindow&){ /*Method overriden by other maps*/ }
 
-void Map::updateMisc(){ /*Method overriden by other maps*/ }
+void Map::updateMisc(){
+	//move cpu
+	if (players[1].getCpu()) {
+		if (frameCount % 50 == 0) {
+			players[1].restoreMovementQueues();
+
+			//move in either a simultaneous direction or just the first direction
+			int firstDir = rand() % 4;
+			int secondDir = rand() % 3;
+			if (firstDir == 0) {
+				players[1].upR = false;
+				if (secondDir == 1)
+					players[1].rightR = false;
+				else if (secondDir == 2)
+					players[1].leftR = false;
+			}
+			else if (firstDir == 1) {
+				players[1].rightR = false;
+				if (secondDir == 1)
+					players[1].upR = false;
+				else if (secondDir == 2)
+					players[1].downR = false;
+			}
+			else if (firstDir == 2) {
+				players[1].downR = false;
+				if (secondDir == 1)
+					players[1].rightR = false;
+				else if (secondDir == 2)
+					players[1].leftR = false;
+			}
+			else {
+				players[1].leftR = false;
+				if (secondDir == 1)
+					players[1].upR = false;
+				else if (secondDir == 2)
+					players[1].downR = false;
+			}
+		}
+	}
+}
 
 void Map2::drawMisc(RenderWindow& window) {
 	window.draw(ground);
@@ -181,6 +220,23 @@ void Map2::updateMisc() {
 	if (pos2.x < groundPos.x || pos2.x > groundPos.x + groundSize.x - pSize
 		|| pos2.y < groundPos.y || pos2.y > groundPos.y + groundSize.y - pSize)
 		players[1].damage(1);
+
+	Map::updateMisc();
+	if (players[1].getCpu()) {
+		if (pos2.x < groundPos.x || pos2.x > groundPos.x + groundSize.x - pSize
+			|| pos2.y < groundPos.y || pos2.y > groundPos.y + groundSize.y - pSize)
+			players[1].restoreMovementQueues();
+
+		if (pos2.x < groundPos.x)
+			players[1].rightR = false;
+		else if (pos2.x > groundPos.x + groundSize.x - pSize)
+			players[1].leftR = false;
+
+		if (pos2.y < groundPos.y)
+			players[1].downR = false;
+		else if (pos2.y > groundPos.y + groundSize.y - pSize)
+			players[1].upR = false;
+	}
 }
 
 /// <summary>
@@ -323,6 +379,8 @@ void Map3::updateMisc() {
 		t.end();
 		teleporterCounter = -200;
 	}
+
+	Map::updateMisc();
 }
 
 void Map3::requestPointCollision(Player& player) {
