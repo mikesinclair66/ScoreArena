@@ -510,7 +510,7 @@ void Map::initPowers() {
 			break;
 		}
 
-		if (players[1].getCpu() && slot == 2)
+		if (players[1].getCpu() && slot == 3)
 			powers2[i] = new Attack();
 	}
 }
