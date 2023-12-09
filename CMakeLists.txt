@@ -30,6 +30,7 @@ set(ScoreArena-SRC
 	selector.h selector.cpp
 	res/
 	)
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ScoreArena)
 add_executable( ScoreArena ${ScoreArena-SRC} )
