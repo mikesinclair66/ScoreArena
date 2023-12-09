@@ -7,6 +7,6 @@ In the root directory, make a folder called build and cd into the build folder.
 From the build folder, run the following commands
 
 cmake ..<br />
-\ncmake --build .
+cmake --build .
 
 This will create and link the necessary files as well as build the project.
