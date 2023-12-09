@@ -6,7 +6,7 @@ Visual Studio (17) 2022 Community Edition
 In the root directory, make a folder called build and cd into the build folder.
 You will be using the following commands:
 
-cmake ..
+cmake ..<br />
 cmake --build .
 
 This will create and link the necessary files as well as build the project. The build folder is blocked off
@@ -22,3 +22,5 @@ cmake ..
 cd back to the root directory and into the build folder. Run:<br />
 cmake ..<br />
 cmake --build .<br />
+=======
+This will create and link the necessary files as well as build the project.
