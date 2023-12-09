@@ -17,6 +17,18 @@ add_subdirectory(thirdparty)
 
 set(ScoreArena-SRC
 	main.cpp
+	arsenal.h arsenal.cpp
+	attackArsenal.h attackArsenal.cpp
+	chooser.h chooser.cpp
+	map.h map.cpp
+	mapIcon.h mapIcon.cpp
+	menu.h menu.cpp
+	message.h message.cpp
+	player.h player.cpp
+	point.h point.cpp
+	power.h power.cpp
+	selector.h selector.cpp
+	res/
 	)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ScoreArena)
