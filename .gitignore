@@ -1,3 +1,4 @@
 thirdparty/SFML-2.6.1/build/
+thirdparty/SFML/build/
 build/
 *.bak
