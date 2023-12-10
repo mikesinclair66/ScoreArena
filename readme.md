@@ -12,15 +12,37 @@ cmake --build .
 This will create and link the necessary files as well as build the project. The build folder is blocked off
 because it's not necessary for the repository.
 
-## I'm ready, let's build
+### I'm ready, let's build
 
-In the root directory, cd into thirdparty/SFML-2.6.1. Run:
+### Steps for Linux
+
+First things first, we need to get into the linux branch to build the project properly:<br />
+git checkout linux<br />
+
+On some Linux distributions, certain libraries need to be installed prior to running the CMake script. These libs worked for me,
+but may vary on different linux distributions:<br />
+libx11-dev<br />
+libgl1-mesa-dev<br />
+libudev-dev<br />
+libxrandr-dev<br />
+libxcursor-dev<br />
+libfreetype-dev<br />
+libopenal-dev<br />
+libvorbis-dev<br />
+libflac-dev<br />
+
+You'll likely need to restart the OS after installing these libraries prior to the CMake.<br />
+
+In the root directory, cd into thirdparty/SFML. Run:
 <br />
-cmake ..
-<br />
+mkdir build && cd build<br />
+cmake ..<br />
+make -j 8<br />
+
+### Steps for Windows
 
 cd back to the root directory and into the build folder. Run:<br />
 cmake ..<br />
 cmake --build .<br />
-=======
+
 This will create and link the necessary files as well as build the project.
