@@ -8,6 +8,12 @@ because it's not necessary for the repository.
 
 ### I'm ready, let's build
 
+### Steps for Windows
+
+cd back to the root directory and into the build folder. Run:<br />
+cmake ..<br />
+cmake --build .<br />
+
 ### Steps for Linux
 
 First things first, we need to get into the linux branch to build the project properly:<br />
@@ -35,11 +41,3 @@ cmake ..<br />
 make -j 8<br />
 
 That's it! Your sfml libs should be available in thirdparty/SFML/build/lib.
-
-### Steps for Windows
-
-cd back to the root directory and into the build folder. Run:<br />
-cmake ..<br />
-cmake --build .<br />
-
-This will create and link the necessary files as well as build the project.
